@@ -1,0 +1,5 @@
+so yeah I'm gonna try to make a battle royale version of pong
+
+using javascript and websockets and python i guess
+
+why python? i don't really know. it seems easy and i'm not exactly trying to do this the hard way
