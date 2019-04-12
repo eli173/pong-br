@@ -1,0 +1,23 @@
+
+
+Basic infrastructure for web work:
+have a player manager class thread which checks main game state and sends it out every so often (1/15 seconds?) (can also form ground work for computer players
+have a single game creator class which waits until there are ten connections, then spawns a new game thread
+game thread which manages game state and reads player logic
+
+sososo
+
+The general outline of the game is that we have some large number of players $n$, arranged in a $2n$-sided regular polygon, where the player has their pong-space, and is surrounded by two walls. The walls primarily serve the purpose of having the game end nicely when there are two players left: it becomes a regular game of pong.
+
+I'm going to limit the number of players to 10 for the time being, I think anything with more than 20 sides might be a bit too much. 20 might be pushing it actually.
+
+
+At the moment I think I've figured out basic matchmaking (the br format pretty much lets me ignore skill levels so I can just throw anyone with anyone), so the main concern is the actual pong gameplay. My biggest challenge is how to shrink the circle when someone dies.
+There's gotta be a decent transformation I can come up with? Probably mostly trig. I've gotta work it so multiple things can go away at the same time.
+
+
+
+Okay MM doesn't actually work yet: new strat tho.
+Have the recieving thingy (the start_server bit, where we recieve the new ws connections) pass along some info to an asynchronous matchmaking service. That recieving thingy will just wait until the match is made, at which point it'll recieve some game-interaction object, and will send and recieve updates from the game started in some separate thread.
+
+As far as dev, I think I'll try to do the networking then actually do game logic
