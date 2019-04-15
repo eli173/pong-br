@@ -1,4 +1,7 @@
 
+NEW PLAN: PUT THE PLAYER CLASS INIT STUFF INSIDE THE MATCHMAKER MANAGE_INCOMING PARTS! LETS ME GET AWAY WITH MORE STUFF SERVER-WISE I THINK
+
+
 
 Basic infrastructure for web work:
 have a player manager class thread which checks main game state and sends it out every so often (1/15 seconds?) (can also form ground work for computer players

@@ -14,7 +14,7 @@ class Game():
     def __init__(self, players):
         self.players = players
         self.game_state = gamestate.GameState()
-        for player in self.players:
+        for player in self.players: # CAUTION HERE, MIGHT NEED TO MODIFY
             player.run()
     def run(self):
         threading.Timer(SPF, self.run).start()
