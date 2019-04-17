@@ -16,3 +16,9 @@ lib/
 /web/socket.js~
 /web/test.html~
 /web/test.js~
+/server/game.js~
+/server/node_modules/*
+server/node_modules/*
+/server/gamestate.js~
+/server/matchmaker.js~
+/server/player.js~
