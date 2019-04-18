@@ -6,7 +6,6 @@ theSocket = null;
 
 function send(k, s) {
     // sends key k thru socket s
-    console.log(k);
     theSocket.send(k);
 }
 

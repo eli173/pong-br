@@ -3,9 +3,14 @@
 function Player(ws) {
     this.status = 'x';
     this.socket = ws;
-    this.socket.onmessage = this.listener;
+    var _this = this;
+    var fn = function(msg) {
+	_this.listener(msg);
+    }
+    this.socket.onmessage = fn;
 }
 
+// this should probably be renamed...
 Player.prototype.listener = function(msg) {
     var data = msg.data;
     if(typeof data == "string" && data.length > 0) {

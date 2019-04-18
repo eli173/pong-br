@@ -8,13 +8,12 @@ function Game(players) {
 }
 
 Game.prototype.start = function(ms) {
-    var me = this;
-    var tmpfn = function() {me.getNextFrame()};
+    var _this = this;
+    var tmpfn = function() {_this.getNextFrame()};
     this.timeout = setInterval(tmpfn, ms);
 }
 
 Game.prototype.getNextFrame = function() {
-    console.log(this);
     var inputs = this.players.map(function(p) {return p.get_status();});
     this.state.update(inputs);
     var state = this.state.getState();
