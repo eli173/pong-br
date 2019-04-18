@@ -8,13 +8,15 @@ function Game(players) {
 }
 
 Game.prototype.start = function(ms) {
-    this.timeout = setInterval(this.getNextFrame, ms);
+    var me = this;
+    var tmpfn = function() {me.getNextFrame()};
+    this.timeout = setInterval(tmpfn, ms);
 }
 
 Game.prototype.getNextFrame = function() {
-    // 
+    console.log(this);
     var inputs = this.players.map(function(p) {return p.get_status();});
-    this.state.updateState(inputs);
+    this.state.update(inputs);
     var state = this.state.getState();
     for(var i=0; i<this.players.length;i++) {
 	this.players[i].socket.send(i.toString() + ", " + state);
