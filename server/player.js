@@ -3,6 +3,7 @@
 function Player(ws) {
     this.status = 'x';
     this.socket = ws;
+    this.id = -1; // id just used for keeping track of deaths and whatnot
     var _this = this;
     var fn = function(msg) {
 	_this.listener(msg);

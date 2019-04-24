@@ -1,5 +1,14 @@
 
-function GameState() {
+const DYING_TIME_IN_FRAMES = 100;
+
+function Dead(id) {
+    this.id = id;
+    this.time = DYING_TIME_IN_FRAMES;
+}
+
+function GameState(n) {
+    this.numLiving = n;
+    this.dead = [];
     this.inputs = [];
 }
 

@@ -22,3 +22,6 @@ server/node_modules/*
 /server/gamestate.js~
 /server/matchmaker.js~
 /server/player.js~
+/server/basics.js~
+/server/field.js~
+/server/paddles.js~

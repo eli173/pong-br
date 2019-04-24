@@ -3,7 +3,10 @@ const GameState = require('./gamestate.js');
 
 function Game(players) {
     this.players = players;
-    this.state = new GameState();
+    for(var i=0; i<players.length; i++) {
+	this.players[i].id = i;
+    }
+    this.state = new GameState(this.players.length);
     this.timeout = null;
 }
 
