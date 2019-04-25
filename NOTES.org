@@ -4,6 +4,6 @@ The general outline of the game is that we have some large number of players $n$
 I'm going to limit the number of players to 10 for the time being, I think anything with more than 20 sides might be a bit too much. 20 might be pushing it actually.
 
 
-At the moment I think I've figured out basic matchmaking (the br format pretty much lets me ignore skill levels so I can just throw anyone with anyone), so the main concern is the actual pong gameplay. My biggest challenge is how to shrink the circle when someone dies.
-There's gotta be a decent transformation I can come up with? Probably mostly trig. I've gotta work it so multiple things can go away at the same time.
 
+
+where do i want the collision checkings to take place? It's gotta be somewhere near the death check?

@@ -25,3 +25,6 @@ server/node_modules/*
 /server/basics.js~
 /server/field.js~
 /server/paddles.js~
+/server/ball.js~
+/server/coord.js~
+/server/endpoints.js~
