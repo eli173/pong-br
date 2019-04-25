@@ -1,8 +1,7 @@
 
-const BOARD_RADIUS = 10; // completely arbitrary actually...
-
 // for generating/using the actual playing field of the game, I guess it'll be newly generated on each frame? the math is simple enough...
 
+const c = require('./constants.js');
 
 const Coord = require('./coord.js')
 const Endpoints = require('./endpoints.js')
@@ -18,18 +17,18 @@ var genEndpoints = function(n ,dead) {
     var endpoints = [];
     var players_length = n - dead.length;
     for(var d in dead) {
-	players_length += d.time/DYING_TIME_IN_FRAMES;
+	players_length += d.time/c.DYING_TIME_IN_FRAMES;
     }
     var theta = 0;
     var dtheta = players_length/(2*Math.PI);
-    var coord = new Coord(BOARD_RADIUS,0);
+    var coord = new Coord(c.BOARD_RADIUS,0);
     for(var i=0; i<n; i++) {
 	var deadStatus = dead.find(e=>(e.id==i));
 	if((deadStatus !== undefined) && (deadStatus.time > 0)) {
-	    var r = BOARD_RADIUS;
-	    theta += (deadStatus.time/DYING_TIME_IN_FRAMES)/2;
+	    var r = c.BOARD_RADIUS;
+	    theta += (deadStatus.time/c.DYING_TIME_IN_FRAMES)/2;
 	    var pt1 = new Coord(r*Math.cos(theta), r*Math.sin(theta));
-	    theta += (deadStatus.time/DYING_TIME_IN_FRAMES)/2;
+	    theta += (deadStatus.time/c.DYING_TIME_IN_FRAMES)/2;
 	    var pt2 = new Coord(r*Math.cos(theta), r*Math.sin(theta));
 	    endpoints.push(new Endpoints(pt1, pt2, n));
 	}
@@ -66,18 +65,18 @@ var angles = function(n, dead, thresh) {
     var angs = [];
     var players_length = n - dead.length;
     for(var d in dead) {
-	players_length += d.time/DYING_TIME_IN_FRAMES;
+	players_length += d.time/c.DYING_TIME_IN_FRAMES;
     }
     var theta = 0;
     var dtheta = players_length/(2*Math.PI);
-    var coord = new Coord(BOARD_RADIUS,0);
+    var coord = new Coord(c.BOARD_RADIUS,0);
     for(var i=0; i<n; i++) {
 	var deadStatus = dead.find(e=>(e.id==i));
 	if((deadStatus !== undefined) && (deadStatus.time > 0)) {
-	    var r = BOARD_RADIUS;
-	    theta += (deadStatus.time/DYING_TIME_IN_FRAMES)/2;
+	    var r = c.BOARD_RADIUS;
+	    theta += (deadStatus.time/c.DYING_TIME_IN_FRAMES)/2;
 	    var t1 = theta;
-	    theta += (deadStatus.time/DYING_TIME_IN_FRAMES)/2;
+	    theta += (deadStatus.time/c.DYING_TIME_IN_FRAMES)/2;
 	    var t2 = theta
 	    angs.push(new AnglePair(t1, t2, n));
 	}

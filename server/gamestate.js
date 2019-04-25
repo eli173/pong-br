@@ -1,23 +1,13 @@
 // NOTE: inputs all get updated, forever will be length n, should work fine as-is
 
-
-const DYING_TIME_IN_FRAMES = 100;
-
-const BOARD_RADIUS = 10; /// ERROR! DUPLICATE!
-const OOB_THRESH = 1; // out-of-bounds threshold
-const ANGLE_THRESH = 0.2 //radians, needs to acct for various rotatings going on... can prolly wing it
-
-const PADDLE_MVT_BONUS = 0.1; // why this value? who knows. the extra speed from paddles in motion
-
-// const BOUNCE_DISTANCE = 0.1; // probably needs to be lowered...
-// actually not needed, this data is in ball.radius...
+const c = require('./constants.js');
 
 const Coord = require('./coord.js');
 const Ball = require('./ball.js');
 
 function Dead(id) {
     this.id = id;
-    this.time = DYING_TIME_IN_FRAMES;
+    this.time = c.DYING_TIME_IN_FRAMES;
 }
 
 function GameState(n) {
@@ -117,10 +107,10 @@ GameState.prototype.update = function(inputs) {
 		    vel_coord.x = -vel_coord.x;
 		    // note: any 'too fast' errors will be solved in the 'speed_up' method, so i need not worry here
 		    if(paddle.direction == 'u') { 
-			vel_coord.x += PADDLE_MVT_BONUS;
+			vel_coord.x += c.PADDLE_MVT_BONUS;
 		    }
 		    else if(paddle.direction == 'd') {
-			vel_coord.x -= PADDLE_MVT_BONUS;
+			vel_coord.x -= c.PADDLE_MVT_BONUS;
 		    }
 		    vel_coord.rotate(slope_angle);
 		    ball.dx = vel_coord.x;
@@ -135,8 +125,8 @@ GameState.prototype.update = function(inputs) {
     // OK I'M HERE AFAICT
     // i don't need to check where any of the paddles are, I just need to check the spaces behind the paddles (±)
     var zero = new Coord(0,0);
-    var oobs = this.balls.filter(b => (b.dist2(zero)>(BOARD_RADIUS+OOB_THRESH)));
-    var angs = angles(this.numPlayers, this.dead, OOB_THRESH);
+    var oobs = this.balls.filter(b => (b.dist2(zero)>(c.BOARD_RADIUS+c.OOB_THRESH)));
+    var angs = angles(this.numPlayers, this.dead, c.ANGLE_THRESH);
     for(var oob in oobs) {
 	var oobth = oob.get_angle();
 	for(var ang in angs) {

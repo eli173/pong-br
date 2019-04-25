@@ -28,3 +28,4 @@ server/node_modules/*
 /server/ball.js~
 /server/coord.js~
 /server/endpoints.js~
+/server/constants.js~
