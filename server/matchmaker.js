@@ -11,7 +11,7 @@ const Game = require('./game.js');
 
 players = [];
 
-
+timeout = null;
 
 var manage_incoming = function(ws) {
     var new_player = new Player(ws);

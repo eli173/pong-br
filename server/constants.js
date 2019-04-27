@@ -5,6 +5,7 @@ var c = {
     WS_PORT: 6789,
     NUM_PLAYERS: 3,
     MS_PER_FRAME: 500,
+    WAIT_TIME: 60000, // 1 minute
     // gamestate
     DYING_TIME_IN_FRAMES: 100,
     BOARD_RADIUS: 10,

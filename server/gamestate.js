@@ -4,6 +4,8 @@ const c = require('./constants.js');
 
 const Coord = require('./coord.js');
 const Ball = require('./ball.js');
+const field = require('./field.js');
+
 
 function Dead(id) {
     this.id = id;
@@ -20,8 +22,9 @@ function GameState(n) {
     }
     this.balls = [];
     for(var i=0;i<starting_balls(n);i++) {
-	this.balls.push(new Ball();)
+	this.balls.push(new Ball());
     }
+    this.field = field.genEndpoints(n,[]);
 }
 
 function starting_balls(n) {
@@ -60,8 +63,9 @@ GameState.prototype.update = function(inputs) {
 	ball.coord.y += ball.dy;
     }
     //
-    var endpoints = genEndpoints(this.numPlayers, this.dead);
-    var borders = endpointNegatives(endpoints);
+    this.field = field.genEndpoints(this.numPlayers, this.dead);
+    var endpoints = this.field;
+    var borders = field.endpointNegatives(endpoints);
     var deadzones = endpoints.filter(ep => ep.isDead);
     var walls = borders.concat(deadzones);    
     // check for collisions
@@ -126,7 +130,7 @@ GameState.prototype.update = function(inputs) {
     // i don't need to check where any of the paddles are, I just need to check the spaces behind the paddles (±)
     var zero = new Coord(0,0);
     var oobs = this.balls.filter(b => (b.dist2(zero)>(c.BOARD_RADIUS+c.OOB_THRESH)));
-    var angs = angles(this.numPlayers, this.dead, c.ANGLE_THRESH);
+    var angs = field.angles(this.numPlayers, this.dead, c.ANGLE_THRESH);
     for(var oob in oobs) {
 	var oobth = oob.get_angle();
 	for(var ang in angs) {

@@ -91,3 +91,4 @@ var angles = function(n, dead, thresh) {
     return angs;
 }
 
+module.exports = {angles: angles, genEndpoints: genEndpoints, endpointNegatives: endpointNegatives};
