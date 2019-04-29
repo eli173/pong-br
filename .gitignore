@@ -29,3 +29,9 @@ server/node_modules/*
 /server/coord.js~
 /server/endpoints.js~
 /server/constants.js~
+/web/field.js~
+/web/endpoints.js~
+/web/coord.js~
+/web/draw.js~
+/web/main.js~
+/web/play.html~

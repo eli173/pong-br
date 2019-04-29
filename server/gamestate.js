@@ -164,7 +164,9 @@ GameState.prototype.getState = function() {
     // dead don't need changing, all info is necessary
     var newballs = this.balls.map(b => b.reduce());
     var newpads = this.paddles.map(p => p.reduce());
-    var theobject = {dead: this.dead, paddles: newpads, balls: newballs};
+    var thedead = this.dead;
+    var totnum = this.numPlayers;
+    var theobject = {n: totnum, dead: thedead, paddles: newpads, balls: newballs};
     return theobject;
 }
 
