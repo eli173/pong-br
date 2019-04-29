@@ -5,7 +5,7 @@ const Coord = require('./coord.js');
 
 function Ball() {
     // generates a new ball with random direction and speed (within limits)
-    var coord = new Coord(0,0);
+    this.coord = new Coord(0,0);
     var angle = Math.random()*2*Math.PI;
     var speed = Math.random()*(c.MAX_INIT-c.MIN_INIT) + c.MIN_INIT;
     this.dx = speed*Math.cos(angle);
@@ -25,6 +25,12 @@ Ball.prototype.get_angle = function() {
     // gets angle from the origin
     return Math.atan2(this.coord.y, this.coord.x);
 }
+
+Ball.prototype.reduce = function() {
+    // returns a minimally necessary object for use on the client
+    return this.coord;
+}
+
 Ball.prototype.radius = c.BALL_RADIUS;
 
 module.exports = Ball;

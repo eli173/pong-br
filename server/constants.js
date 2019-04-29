@@ -6,6 +6,7 @@ var c = {
     NUM_PLAYERS: 3,
     MS_PER_FRAME: 500,
     WAIT_TIME: 60000, // 1 minute
+    MAX_GAMES: 5, // the most games allowed to go on at once, to be tweaked as needed for purposes
     // gamestate
     DYING_TIME_IN_FRAMES: 100,
     BOARD_RADIUS: 10,

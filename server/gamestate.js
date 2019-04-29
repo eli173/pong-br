@@ -5,7 +5,7 @@ const c = require('./constants.js');
 const Coord = require('./coord.js');
 const Ball = require('./ball.js');
 const field = require('./field.js');
-
+const Paddle = require('./paddles.js');
 
 function Dead(id) {
     this.id = id;
@@ -18,13 +18,12 @@ function GameState(n) {
     this.dead = [];
     this.paddles = [];
     for(var i=0;i<n;i++) {
-	this.paddles.push(new Paddle(n));
+	this.paddles.push(new Paddle(i));
     }
     this.balls = [];
     for(var i=0;i<starting_balls(n);i++) {
 	this.balls.push(new Ball());
     }
-    this.field = field.genEndpoints(n,[]);
 }
 
 function starting_balls(n) {
@@ -46,7 +45,7 @@ function nearest_point_on_line(c, ep) {
     }
     var sl = (ep.f.y-ep.s.y)/(ep.f.x-ep.s.x);
     var sr = 1/sl;
-    var x_int = (sl*ep.f.x - sr*c.x + c.y - ep.f.y)/(sl-sb);
+    var x_int = (sl*ep.f.x - sr*c.x + c.y - ep.f.y)/(sl-sr);
     var y_int = sr*(x_int-c.x) + c.y;
     return new Coord(x_int, y_int);
 }
@@ -55,21 +54,20 @@ GameState.prototype.update = function(inputs) {
     // inputs is an array of the characters from all the players (even dead? yeah)
     // move the paddles
     for(var i=0;i<this.paddles.length;i++) {
-	paddles[i].move(inputs[paddles[i].id]); //hacky and bad, requires the inputs be
+	this.paddles[i].move(inputs[this.paddles[i].id]); //hacky and bad, requires the inputs be
     }
     //move the balls
-    for(var ball in this.balls) {
+    for(var ball of this.balls) {
 	ball.coord.x += ball.dx;
 	ball.coord.y += ball.dy;
     }
     //
-    this.field = field.genEndpoints(this.numPlayers, this.dead);
-    var endpoints = this.field;
+    var endpoints = field.genEndpoints(this.numPlayers, this.dead);
     var borders = field.endpointNegatives(endpoints);
     var deadzones = endpoints.filter(ep => ep.isDead);
     var walls = borders.concat(deadzones);    
     // check for collisions
-    for(var ball in this.balls) {
+    for(var ball of this.balls) {
 	// (check the fixt edges first, then the paddles I guess
 	var collided = false;
 	for(var i=0; (i<walls.length) && !collided; i++) {
@@ -92,7 +90,7 @@ GameState.prototype.update = function(inputs) {
 	    }  
 	}
 	var livingzones = endpoints.filter(ep => !ep.isDead);
-	for(var lz in livingzones) {
+	for(var lz of livingzones) {
 	    // get corresponding paddle
 	    // should be guaranteed to find one.... so...
 	    var paddle = this.paddles.find(p => p.id ==lz.id);
@@ -129,11 +127,11 @@ GameState.prototype.update = function(inputs) {
     // OK I'M HERE AFAICT
     // i don't need to check where any of the paddles are, I just need to check the spaces behind the paddles (±)
     var zero = new Coord(0,0);
-    var oobs = this.balls.filter(b => (b.dist2(zero)>(c.BOARD_RADIUS+c.OOB_THRESH)));
+    var oobs = this.balls.filter(b => (b.coord.dist2(zero)>(c.BOARD_RADIUS+c.OOB_THRESH)));
     var angs = field.angles(this.numPlayers, this.dead, c.ANGLE_THRESH);
-    for(var oob in oobs) {
+    for(var oob of oobs) {
 	var oobth = oob.get_angle();
-	for(var ang in angs) {
+	for(var ang of angs) {
 	    // normalise angle pair...
 	    // this gon be inefficient sigh
 	    var a1 = ang.f;
@@ -162,7 +160,12 @@ GameState.prototype.update = function(inputs) {
 
 GameState.prototype.getState = function() {
     // returns a string suitable to be broadcast to all the players
-    return this.inputs.join("");
+    // only need the dead, balls, and paddles, everything else can be determined
+    // dead don't need changing, all info is necessary
+    var newballs = this.balls.map(b => b.reduce());
+    var newpads = this.paddles.map(p => p.reduce());
+    var theobject = {dead: this.dead, paddles: newpads, balls: newballs};
+    return theobject;
 }
 
 module.exports = GameState;

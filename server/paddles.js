@@ -11,7 +11,7 @@ var Paddle = function(id) {
     this.direction = 'x';
 }
 
-Paddle.prototype.move(direction) {
+Paddle.prototype.move = function(direction) {
     // direction is either 'u', 'd', or 'x', passed along from the inputs gathered elsewhere
     if((direction=='u') && (this.position < 1)) {
 	this.position += c.DPADDLE;
@@ -33,7 +33,7 @@ function dist(p1,p2) {
     
 }
 
-Paddle.prototype.getEndpoints(enclosing) {
+Paddle.prototype.getEndpoints = function(enclosing) {
     // returns an endpoints object for the paddle
     // given the desired width of said paddle and the enclosing endpoints
     var encl_len = dist(enclosing.f, enclosing.s);
@@ -48,3 +48,12 @@ Paddle.prototype.getEndpoints(enclosing) {
     var second = new Coord(vector[0]*d, vector[1]*d);
     return new Endpoints(first, second, this.id);
 }
+
+Paddle.prototype.reduce = function() {
+    var theid = this.id;
+    var thepos = this.position;
+    return {id:theid, pos:thepos};
+}
+
+
+module.exports = Paddle;

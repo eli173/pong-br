@@ -20,8 +20,10 @@ Game.prototype.getNextFrame = function() {
     var inputs = this.players.map(function(p) {return p.get_status();});
     this.state.update(inputs);
     var state = this.state.getState();
+    state.id = 0;
     for(var i=0; i<this.players.length;i++) {
-	this.players[i].socket.send(i.toString() + ", " + state);
+	state.id = i;
+	this.players[i].socket.send(JSON.stringify(state));
     }
 }
 

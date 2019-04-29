@@ -16,7 +16,7 @@ var genEndpoints = function(n ,dead) {
     // so i'll start from a radius out a zero radians
     var endpoints = [];
     var players_length = n - dead.length;
-    for(var d in dead) {
+    for(var d of dead) {
 	players_length += d.time/c.DYING_TIME_IN_FRAMES;
     }
     var theta = 0;
@@ -64,7 +64,7 @@ var angles = function(n, dead, thresh) {
     // gives angle pairs for the thresholds and whatnot.
     var angs = [];
     var players_length = n - dead.length;
-    for(var d in dead) {
+    for(var d of dead) {
 	players_length += d.time/c.DYING_TIME_IN_FRAMES;
     }
     var theta = 0;
@@ -85,7 +85,7 @@ var angles = function(n, dead, thresh) {
 	    var t1 = theta;
  	    theta += dtheta/2;
 	    var t2 = theta;
-	    angs.push(new anglepair(t1, t2, n));
+	    angs.push(new AnglePair(t1, t2, n));
 	}
     }
     return angs;
