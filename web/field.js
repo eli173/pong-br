@@ -30,9 +30,9 @@ var genAllEndpoints = function(n, dead) {
 	}
 	else { // here it has to be alive, skips over dead and no time
 		var point1 = new Coord(r*Math.cos(theta),r*Math.sin(theta));
-		theta += dtheta;
+		theta += dtheta/2;
 		var point2 = new Coord(r*Math.cos(theta),r*Math.sin(theta));
-		theta += dtheta;
+		theta += dtheta/2;
 		var point3 = new Coord(r*Math.cos(theta),r*Math.sin(theta));
 		endpoints.push(new Endpoints(point1, point2, i));
 		endpoints.push(new Endpoints(point2, point3, -1));
