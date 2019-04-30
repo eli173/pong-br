@@ -23,7 +23,7 @@ Game.prototype.getNextFrame = function() {
     state.id = 0;
     for(var i=0; i<this.players.length;i++) {
 	state.id = i;
-	this.players[i].socket.send(JSON.stringify(state));
+	this.players[i].send_data(JSON.stringify(state));
     }
 }
 

@@ -63,6 +63,7 @@ GameState.prototype.update = function(inputs) {
     }
     //
     var endpoints = field.genEndpoints(this.numPlayers, this.dead);
+    //console.log(endpoints);
     var borders = field.endpointNegatives(endpoints);
     var deadzones = endpoints.filter(ep => ep.isDead);
     var walls = borders.concat(deadzones);    
@@ -123,24 +124,32 @@ GameState.prototype.update = function(inputs) {
 	    }
 	}
     }
+    // shrink the existing dead zones for the future
+    for(var d of this.dead) {
+	d.time--;
+    }
+    
     // check for deaths
     // OK I'M HERE AFAICT
     // i don't need to check where any of the paddles are, I just need to check the spaces behind the paddles (±)
     var zero = new Coord(0,0);
-    var oobs = this.balls.filter(b => (b.coord.dist2(zero)>(c.BOARD_RADIUS+c.OOB_THRESH)));
+    var oobs = this.balls.filter(b => (b.coord.dist2(zero)>(c.BOARD_RADIUS+c.OOB_THRESH)**2));
     var angs = field.angles(this.numPlayers, this.dead, c.ANGLE_THRESH);
     for(var oob of oobs) {
 	var oobth = oob.get_angle();
 	for(var ang of angs) {
 	    // normalise angle pair...
 	    // this gon be inefficient sigh
-	    var a1 = ang.f;
-	    var a2 = ang.s;
-	    while(oobth > (a1-2*Math.PI))
-		oobth -= 2*Math.PI;
-	    while( a2 > (oobth-2*Math.PI))
-		a2 -= 2*Math.PI;
-	    if((a2-a1) < 2*Math.PI) { // it's in between! (I should check my math...)
+	    var a1 = ang.f % (2*Math.PI);
+	    var a2 = ang.s % (2*Math.PI);
+	    var ab = oobth % (2*Math.PI);
+	    if(a1 > a2) {
+		a2 += 2*Math.PI;
+	    }
+	    if (a1 > ab) {
+		ab += 2*Math.PI;
+	    }
+	    if((ab > a1) && (ab < a2)) {
 		// check if not already dead (in case multi balls out at same time etc)
 		if(!this.dead.some(x => x.id == ang.id)) {
 		    this.dead.push(new Dead(ang.id));

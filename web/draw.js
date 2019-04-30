@@ -11,12 +11,14 @@ bcolor = 'rgb(100,100,100)';
 // main function, given everything from the game state, draws on the given context
 var draw = function(state, ctx) {
     clearCanvas(ctx);
+    
     // okay, gotta get the endpoints, then draw the walls,
     // then draw the balls,
     // then finally the hard part is the paddles
+    //console.log(state);
     var theEndpoints = genEndpoints(state.n, state.dead);
     var negatives = endpointNegatives(theEndpoints);
-
+    console.log(theEndpoints);
     // dead walls
     for(var ep of theEndpoints) {
 	var deadOption = state.dead.find(d => (d.id==ep.id));
@@ -33,7 +35,7 @@ var draw = function(state, ctx) {
 	drawBall(ctx, bcolor, b);
     }
     // finally the paddles...
-    for(var ep of endpoints) {
+    for(var ep of theEndpoints) {
 	var paddleOption = state.paddles.find(p => (p.id == ep.id));
 	if(paddleOption !== undefined) {
 	    // should probably make sure it's not dead?
@@ -48,6 +50,7 @@ var draw = function(state, ctx) {
 var getPaddlePoints = function(paddle, enclosing) {
     // returns an endpoints object for the paddle
     // given the desired width of said paddle and the enclosing endpoints
+    console.log(enclosing);
     var encl_len = dist(enclosing.f, enclosing.s);
     var pspace_len = encl_len - (2*c.WIDTH_RATIO*encl_len);
     var place_on_pspace = pspace_len*(paddle.position+1)/2;
@@ -63,16 +66,16 @@ var getPaddlePoints = function(paddle, enclosing) {
 
 
 
-var drawBall(ctx, color, c) {
+var drawBall = function(ctx, color, coord) {
     ctx.save();
     ctx.fillStyle = bcolor;
     ctx.beginPath();
-    ctx.arc(c.x, c.y, BALL_RADIUS, 0, 2*Math.PI, false);
+    ctx.arc(coord.x, coord.y, c.BALL_RADIUS, 0, 2*Math.PI, false);
     ctx.fill();
     ctx.restore();
 }
 
-var drawLine(ctx, color, c1, c2) {
+var drawLine = function(ctx, color, c1, c2) {
     // draws a line from c1 to c2 in color
     ctx.save();
     ctx.strokeStyle = color;
@@ -86,7 +89,6 @@ var drawLine(ctx, color, c1, c2) {
 
 var clearCanvas = function(ctx) {
     ctx.save();
-    ctx.transform(1,0,0,1,0,0);
-    ctx.clearRect(0,0,cxt.canvas.width, ctx.canvas.height);
+    ctx.clearRect(-ctx.canvas.width, -ctx.canvas.height, ctx.canvas.width*2, ctx.canvas.height*2);
     ctx.restore();
 }

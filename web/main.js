@@ -4,6 +4,8 @@ var prefixurl = "ws://localhost:6789";
 theSocket = null;
 
 
+var module = {};
+
 var main = function() { // starts everything, gets us going, setup ish
     var canvas = document.getElementById('c');
     if(!canvas.getContext) {
@@ -14,7 +16,7 @@ var main = function() { // starts everything, gets us going, setup ish
     canvas.height = window.innerHeight;
     ctx = canvas.getContext('2d');
     // change the 1's to zoom in i think.. todo
-    ctx.transform(1, 0, 0, 1, ctx.width/2, ctx.height/2);
+    ctx.transform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2); // change to setTransform?
 
     
     theSocket = new WebSocket(prefixurl);

@@ -25,7 +25,7 @@ Player.prototype.listener = function(msg) {
 }
 
 Player.prototype.send_data = function(data) {
-    if(this.socket.readyState==1) { // TODO: replace the '1' with the proper identifier (the ready state constant)
+    if(this.socket.readyState==this.socket.OPEN) {
 	this.socket.send(data);
     }
 }

@@ -16,8 +16,9 @@ var genEndpoints = function(n ,dead) {
 	players_length += d.time/c.DYING_TIME_IN_FRAMES;
     }
     var theta = 0;
-    var dtheta = players_length/(2*Math.PI);
-    var coord = new Coord(c.BOARD_RADIUS,0);
+    var dtheta = (2*Math.PI)/players_length;
+    // same bs with the 'r'...
+    var r = c.BOARD_RADIUS;
     for(var i=0; i<n; i++) {
 	var deadStatus = dead.find(e=>(e.id==i));
 	if((deadStatus !== undefined) && (deadStatus.time > 0)) {
