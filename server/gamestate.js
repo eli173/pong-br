@@ -62,11 +62,10 @@ GameState.prototype.update = function(inputs) {
 	ball.coord.y += ball.dy;
     }
     //
-    var endpoints = field.genEndpoints(this.numPlayers, this.dead);
-    //console.log(endpoints);
-    var borders = field.endpointNegatives(endpoints);
-    var deadzones = endpoints.filter(ep => ep.isDead);
-    var walls = borders.concat(deadzones);    
+    var endpoints = field.genAllEndpoints(this.numPlayers, this.dead);
+    var livingzones = endpoints.filter(e => (e.id != -1));
+    livingzones = livingzones.filter(e => this.dead.some(d => (d.id!=e.id))); // bad time complexity?
+    var walls = endpoints.filter(e => (e.id == -1) || this.dead.some(d => (d.id==e.id)));
     // check for collisions
     for(var ball of this.balls) {
 	// (check the fixt edges first, then the paddles I guess
@@ -90,7 +89,6 @@ GameState.prototype.update = function(inputs) {
 		ball.speed_up();
 	    }  
 	}
-	var livingzones = endpoints.filter(ep => !ep.isDead);
 	for(var lz of livingzones) {
 	    // get corresponding paddle
 	    // should be guaranteed to find one.... so...
@@ -126,12 +124,14 @@ GameState.prototype.update = function(inputs) {
     }
     // shrink the existing dead zones for the future
     for(var d of this.dead) {
-	d.time--;
+	if(d.time > 0)
+	    d.time--;
     }
     
     // check for deaths
-    // OK I'M HERE AFAICT
     // i don't need to check where any of the paddles are, I just need to check the spaces behind the paddles (±)
+
+    // JUST REWRITE HERE TO AVOID field.angles, I CAN JUST DO ARCTAN ON PLAYERPOINTS
     var zero = new Coord(0,0);
     var oobs = this.balls.filter(b => (b.coord.dist2(zero)>(c.BOARD_RADIUS+c.OOB_THRESH)**2));
     var angs = field.angles(this.numPlayers, this.dead, c.ANGLE_THRESH);

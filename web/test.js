@@ -13,9 +13,9 @@ function start() {
     // opens up a nice websocket
     theSocket = new WebSocket(prefixurl);
     theSocket.onmessage = function (e) {
-	newdiv = document.createElement('div')
-	newdiv.innerText = "data:" + e.data;
-	document.getElementById('content').appendChild(newdiv);
+	// newdiv = document.createElement('div')
+	// newdiv.innerText = "data:" + e.data;
+	// document.getElementById('content').appendChild(newdiv);
     }
 }
 

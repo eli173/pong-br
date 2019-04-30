@@ -16,41 +16,36 @@ var draw = function(state, ctx) {
     // then draw the balls,
     // then finally the hard part is the paddles
     //console.log(state);
-    var theEndpoints = genEndpoints(state.n, state.dead);
-    var negatives = endpointNegatives(theEndpoints);
-    console.log(theEndpoints);
-    // dead walls
-    for(var ep of theEndpoints) {
-	var deadOption = state.dead.find(d => (d.id==ep.id));
-	if((deadOption !== undefined) && (deadOption.time > 0)) {
-	    drawLine(ctx, dwallcolor, ep.f, ep.s);
+
+    var endpoints = genAllEndpoints(state.n, state.dead);
+    console.log(endpoints);
+    var livingzones = endpoints.filter(e => (e.id != -1) && (state.dead.some(d=>(d.id!=e.id))));
+    var walls = endpoints.filter(e => (e.id==-1) || state.dead.some(d=>(d.id==e.id)));
+    //draw walls
+    for(var eps of walls) {
+	var c = wallcolor;
+	if(eps.id != -1) {
+	    c = dwallcolor;
 	}
-    }
-    // walls
-    for(var ep of negatives) {
-	drawLine(ctx, wallcolor, ep.f, ep.s);
+	drawLine(ctx, c, eps.f, eps.s);
     }
     // balls
     for(var b of state.balls) {
 	drawBall(ctx, bcolor, b);
     }
     // finally the paddles...
-    for(var ep of theEndpoints) {
-	var paddleOption = state.paddles.find(p => (p.id == ep.id));
-	if(paddleOption !== undefined) {
-	    // should probably make sure it's not dead?
-	    if(!state.dead.some(d => (d.id == ep.id))) {
-		var pps = getPaddlePoints(paddleOption, ep);
-		drawLine(ctx, pcolor, pps.f, pps.s);
-	    }
-	}
+    for(var eps of livingzones) {
+	var paddle = state.paddles.find(p => (p.id==ep.id)); //should be guaranteed?
+	if(paddle === undefined) alert("UH OH, paddle somehow undefined");
+	// cool this is way simpler since we know these are all alive
+	var pps = getPaddlePoints(paddle, eps);
+	drawLine(ctx, pcolor, pps.f, pps.s);
     }
 }
 
 var getPaddlePoints = function(paddle, enclosing) {
     // returns an endpoints object for the paddle
     // given the desired width of said paddle and the enclosing endpoints
-    console.log(enclosing);
     var encl_len = dist(enclosing.f, enclosing.s);
     var pspace_len = encl_len - (2*c.WIDTH_RATIO*encl_len);
     var place_on_pspace = pspace_len*(paddle.position+1)/2;
@@ -64,7 +59,9 @@ var getPaddlePoints = function(paddle, enclosing) {
     return new Endpoints(first, second, paddle.id);
 }
 
-
+var dist = function(c1, c2) {
+    return Math.sqrt((c1.x-c2.x)**2 + (c1.y-c2.y)**2);
+}
 
 var drawBall = function(ctx, color, coord) {
     ctx.save();
