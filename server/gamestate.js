@@ -64,7 +64,7 @@ GameState.prototype.update = function(inputs) {
     //
     var endpoints = field.genAllEndpoints(this.numPlayers, this.dead);
     var livingzones = endpoints.filter(e => (e.id != -1));
-    livingzones = livingzones.filter(e => this.dead.some(d => (d.id!=e.id))); // bad time complexity?
+    livingzones = livingzones.filter(e => !this.dead.some(d => (d.id==e.id))); // bad time complexity?
     var walls = endpoints.filter(e => (e.id == -1) || this.dead.some(d => (d.id==e.id)));
     // check for collisions
     for(var ball of this.balls) {
@@ -134,7 +134,8 @@ GameState.prototype.update = function(inputs) {
     // JUST REWRITE HERE TO AVOID field.angles, I CAN JUST DO ARCTAN ON PLAYERPOINTS
     var zero = new Coord(0,0);
     var oobs = this.balls.filter(b => (b.coord.dist2(zero)>(c.BOARD_RADIUS+c.OOB_THRESH)**2));
-    var angs = field.angles(this.numPlayers, this.dead, c.ANGLE_THRESH);
+    var angs = livingzones.map(eps => eps.getAngles());
+    //var angs = field.angles(this.numPlayers, this.dead, c.ANGLE_THRESH);
     for(var oob of oobs) {
 	var oobth = oob.get_angle();
 	for(var ang of angs) {

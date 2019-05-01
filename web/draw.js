@@ -6,6 +6,7 @@ dwallcolor = 'rgb(200,0,0)';
 wallcolor = 'rgb(100,100,0)';
 pcolor = 'rgb(0,0,200)';
 bcolor = 'rgb(100,100,100)';
+xcolor = 'rgb(200,0,200)';
 
 
 // main function, given everything from the game state, draws on the given context
@@ -18,8 +19,7 @@ var draw = function(state, ctx) {
     //console.log(state);
 
     var endpoints = genAllEndpoints(state.n, state.dead);
-    console.log(endpoints);
-    var livingzones = endpoints.filter(e => (e.id != -1) && (state.dead.some(d=>(d.id!=e.id))));
+    var livingzones = endpoints.filter(e => (e.id != -1) && (!state.dead.some(d=>(d.id==e.id))));
     var walls = endpoints.filter(e => (e.id==-1) || state.dead.some(d=>(d.id==e.id)));
     //draw walls
     for(var eps of walls) {
@@ -29,16 +29,21 @@ var draw = function(state, ctx) {
 	}
 	drawLine(ctx, c, eps.f, eps.s);
     }
+    // do something to show the zones for my sanity
+    for(var lz of livingzones) {
+	drawLine(ctx, xcolor, lz.f, lz.s);
+    }
     // balls
     for(var b of state.balls) {
 	drawBall(ctx, bcolor, b);
     }
     // finally the paddles...
     for(var eps of livingzones) {
-	var paddle = state.paddles.find(p => (p.id==ep.id)); //should be guaranteed?
+	var paddle = state.paddles.find(p => (p.id==eps.id)); //should be guaranteed?
 	if(paddle === undefined) alert("UH OH, paddle somehow undefined");
 	// cool this is way simpler since we know these are all alive
 	var pps = getPaddlePoints(paddle, eps);
+	console.log(pps);
 	drawLine(ctx, pcolor, pps.f, pps.s);
     }
 }
