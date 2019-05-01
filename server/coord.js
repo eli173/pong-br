@@ -16,6 +16,11 @@ Coord.prototype.dist2 = function(c2) {
     return dx*dx + dy*dy;
 }
 
+Coord.prototype.dist2origin = function() {
+    // kinda hacky that this exists, I know
+    return this.x*this.x + this.y*this.y;
+}
+
 Coord.prototype.rotate = function(th) {
     // rotates about angle, returns new value
     var new_x = this.x*Math.cos(th) - this.y*Math.sin(th);

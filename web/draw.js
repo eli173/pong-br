@@ -31,7 +31,7 @@ var draw = function(state, ctx) {
     }
     // do something to show the zones for my sanity
     for(var lz of livingzones) {
-	//drawLine(ctx, xcolor, lz.f, lz.s);
+	drawLine(ctx, xcolor, lz.f, lz.s);
     }
     // balls
     for(var b of state.balls) {

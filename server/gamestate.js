@@ -68,8 +68,15 @@ GameState.prototype.update = function(inputs) {
     var walls = endpoints.filter(e => (e.id == -1) || this.dead.some(d => (d.id==e.id)));
     // check for collisions
     for(var ball of this.balls) {
-	// (check the fixt edges first, then the paddles I guess
 	var collided = false;
+	// first, see if the ball is moving towards the center (should solve most problems with things
+	var currd2 = ball.coord.dist2origin();
+	var nextd2 = new Coord(ball.coord.x + ball.dx, ball.coord.y + ball.dy).dist2origin();
+	if(nextd2 < currd2)
+	    continue;
+
+	// below here probably requires changes
+	// (check the fixt edges first, then the paddles I guess
 	for(var i=0; (i<walls.length) && !collided; i++) {
 	    var nearest = nearest_point_on_line(ball.coord, walls[i]);
 	    var dist2 = ball.coord.dist2(nearest);
