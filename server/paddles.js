@@ -33,6 +33,25 @@ function dist(p1,p2) {
     
 }
 
+Paddle.prototype.getPaddlePoints = function(enclosing) {
+    var encl_len = dist(enclosing.f, enclosing.s);
+    var pspace_len = encl_len - c.WIDTH_RATIO*encl_len;
+    var idk_len = (encl_len - pspace_len)/2; // the length between the highest paddle center location and the edge
+    var paddle_ratio = (this.position+1)/2; // converts the -1-to-1-centered 'position' to a 0-1 ratio
+    var center_pos = idk_len + paddle_ratio*pspace_len; // length from one of the endpoints (which one? does it matter?)
+    var fst_pos = center_pos - c.WIDTH_RATIO*encl_len/2;
+    var snd_pos = center_pos + c.WIDTH_RATIO*encl_len/2;
+    var fst_pct = fst_pos/encl_len;
+    var snd_pct = snd_pos/encl_len;
+    var fst_x = enclosing.f.x*fst_pct + enclosing.s.x*(1-fst_pct);
+    var fst_y = enclosing.f.y*fst_pct + enclosing.s.y*(1-fst_pct);
+    var snd_x = enclosing.f.x*snd_pct + enclosing.s.x*(1-snd_pct);
+    var snd_y = enclosing.f.y*snd_pct + enclosing.s.y*(1-snd_pct);
+    var fst = new Coord(fst_x, fst_y);
+    var snd = new Coord(snd_x, snd_y);
+    return new Endpoints(fst, snd, this.id);
+}
+
 Paddle.prototype.getEndpoints = function(enclosing) {
     // returns an endpoints object for the paddle
     // given the desired width of said paddle and the enclosing endpoints

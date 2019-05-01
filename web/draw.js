@@ -31,7 +31,7 @@ var draw = function(state, ctx) {
     }
     // do something to show the zones for my sanity
     for(var lz of livingzones) {
-	drawLine(ctx, xcolor, lz.f, lz.s);
+	//drawLine(ctx, xcolor, lz.f, lz.s);
     }
     // balls
     for(var b of state.balls) {
@@ -43,25 +43,28 @@ var draw = function(state, ctx) {
 	if(paddle === undefined) alert("UH OH, paddle somehow undefined");
 	// cool this is way simpler since we know these are all alive
 	var pps = getPaddlePoints(paddle, eps);
-	console.log(pps);
 	drawLine(ctx, pcolor, pps.f, pps.s);
     }
 }
 
+
 var getPaddlePoints = function(paddle, enclosing) {
-    // returns an endpoints object for the paddle
-    // given the desired width of said paddle and the enclosing endpoints
     var encl_len = dist(enclosing.f, enclosing.s);
-    var pspace_len = encl_len - (2*c.WIDTH_RATIO*encl_len);
-    var place_on_pspace = pspace_len*(paddle.position+1)/2;
-    var above_f = pspace_len + c.WIDTH_RATIO;  // distance above the first enclosing point (takes advantage of the increasing in angle thing to determine orientations)
-    var overall_proportion = above_f/encl_len;
-    var vector = [enclosing.s.x-enclosing.f.x, enclosing.s.y-enclosing.f.y];
-    var d = overall_proportion-c.WIDTH_RATIO;
-    var first = new Coord(vector[0]*d, vector[1]*d);
-    d = overall_proportion+c.WIDTH_RATIO;
-    var second = new Coord(vector[0]*d, vector[1]*d);
-    return new Endpoints(first, second, paddle.id);
+    var pspace_len = encl_len - c.WIDTH_RATIO*encl_len;
+    var idk_len = (encl_len - pspace_len)/2; // the length between the highest paddle center location and the edge
+    var paddle_ratio = (paddle.pos+1)/2; // converts the -1-to-1-centered 'position' to a 0-1 ratio
+    var center_pos = idk_len + paddle_ratio*pspace_len; // length from one of the endpoints (which one? does it matter?)
+    var fst_pos = center_pos - c.WIDTH_RATIO*encl_len/2;
+    var snd_pos = center_pos + c.WIDTH_RATIO*encl_len/2;
+    var fst_pct = fst_pos/encl_len;
+    var snd_pct = snd_pos/encl_len;
+    var fst_x = enclosing.f.x*fst_pct + enclosing.s.x*(1-fst_pct);
+    var fst_y = enclosing.f.y*fst_pct + enclosing.s.y*(1-fst_pct);
+    var snd_x = enclosing.f.x*snd_pct + enclosing.s.x*(1-snd_pct);
+    var snd_y = enclosing.f.y*snd_pct + enclosing.s.y*(1-snd_pct);
+    var fst = new Coord(fst_x, fst_y);
+    var snd = new Coord(snd_x, snd_y);
+    return new Endpoints(fst, snd, paddle.id);
 }
 
 var dist = function(c1, c2) {

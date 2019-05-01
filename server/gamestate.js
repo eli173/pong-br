@@ -94,7 +94,7 @@ GameState.prototype.update = function(inputs) {
 	    // should be guaranteed to find one.... so...
 	    var paddle = this.paddles.find(p => p.id ==lz.id);
 	    if((paddle !== undefined) && !collided) {
-		var padends = paddle.getEndpoints(lz);
+		var padends = paddle.getPaddlePoints(lz);
 		var nearest = nearest_point_on_line(ball.coord, padends);
 		var dist2 = ball.coord.dist2(nearest);
 		if(dist2 < (ball.radius*ball.radius)) {
