@@ -13,12 +13,12 @@ function Ball() {
 }
 
 Ball.prototype.speed_up = function() {
-    // this is ez with proportions
     var speed = Math.sqrt(this.dx*this.dx + this.dy*this.dy);
     if (speed > c.MAX_SPEED)
 	speed = c.MAX_SPEED;
-    this.dx = (speed*this.dx)/(speed+c.SPEED_BUMP);
-    this.dy = (speed*this.dy)/(speed+c.SPEED_BUMP);
+    // fun trig stuff that i've messed up probably a few times now
+    this.dx = this.dx*(speed+c.SPEED_BUMP)/speed;
+    this.dy = this.dy*(speed+c.SPEED_BUMP)/speed;
 }
 
 Ball.prototype.get_angle = function() {

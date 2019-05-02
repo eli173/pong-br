@@ -6,6 +6,7 @@ const Coord = require('./coord.js');
 const Ball = require('./ball.js');
 const field = require('./field.js');
 const Paddle = require('./paddles.js');
+const collisions = require('./collisions.js');
 
 function Dead(id) {
     this.id = id;
@@ -32,23 +33,6 @@ function starting_balls(n) {
     return n;
 }
 
-
-function nearest_point_on_line(c, ep) {
-    // finds the point on the line defined by ep closest to center c
-    if(ep.f.x == ep.s.x) {
-	// vertical line, undef slope
-	return new Coord(ep.f.x, c.y);
-    }
-    if(ep.f.y == ep.s.y) {
-	// horizontal line, zero slope
-	return new Coord(c.x, ep.f.y);
-    }
-    var sl = (ep.f.y-ep.s.y)/(ep.f.x-ep.s.x);
-    var sr = 1/sl;
-    var x_int = (sl*ep.f.x - sr*c.x + c.y - ep.f.y)/(sl-sr);
-    var y_int = sr*(x_int-c.x) + c.y;
-    return new Coord(x_int, y_int);
-}
 
 GameState.prototype.update = function(inputs) {
     // inputs is an array of the characters from all the players (even dead? yeah)
@@ -88,7 +72,7 @@ GameState.prototype.update = function(inputs) {
 		// rotate, reflect, rotate back
 		var vel_coord = new Coord(ball.dx, ball.dy);
 		vel_coord.rotate(-slope_angle);
-		vel_coord.x = -vel_coord.x;
+		vel_coord.y = -vel_coord.y;
 		vel_coord.rotate(slope_angle);
 		ball.dx = vel_coord.x;
 		ball.dy = vel_coord.y;
@@ -112,7 +96,7 @@ GameState.prototype.update = function(inputs) {
 		    // rotate, reflect, rotate back
 		    var vel_coord = new Coord(ball.dx, ball.dy);
 		    vel_coord.rotate(-slope_angle);
-		    vel_coord.x = -vel_coord.x;
+		    vel_coord.y = -vel_coord.y;
 		    // note: any 'too fast' errors will be solved in the 'speed_up' method, so i need not worry here
 		    if(paddle.direction == 'u') { 
 			vel_coord.x += c.PADDLE_MVT_BONUS;
@@ -128,6 +112,8 @@ GameState.prototype.update = function(inputs) {
 		}  
 	    }
 	}
+
+
     }
     // shrink the existing dead zones for the future
     for(var d of this.dead) {
@@ -138,7 +124,6 @@ GameState.prototype.update = function(inputs) {
     // check for deaths
     // i don't need to check where any of the paddles are, I just need to check the spaces behind the paddles (±)
 
-    // JUST REWRITE HERE TO AVOID field.angles, I CAN JUST DO ARCTAN ON PLAYERPOINTS
     var zero = new Coord(0,0);
     var oobs = this.balls.filter(b => (b.coord.dist2(zero)>(c.BOARD_RADIUS+c.OOB_THRESH)**2));
     var angs = livingzones.map(eps => eps.getAngles());
@@ -186,5 +171,24 @@ GameState.prototype.getState = function() {
     var theobject = {n: totnum, dead: thedead, paddles: newpads, balls: newballs};
     return theobject;
 }
+
+
+function nearest_point_on_line(c, ep) {
+    // finds the point on the line defined by ep closest to center c
+    if(ep.f.x == ep.s.x) {
+	// vertical line, undef slope
+	return new Coord(ep.f.x, c.y);
+    }
+    if(ep.f.y == ep.s.y) {
+	// horizontal line, zero slope
+	return new Coord(c.x, ep.f.y);
+    }
+    var sl = (ep.f.y-ep.s.y)/(ep.f.x-ep.s.x);
+    var sr = 1/sl;
+    var x_int = (sl*ep.f.x - sr*c.x + c.y - ep.f.y)/(sl-sr);
+    var y_int = sr*(x_int-c.x) + c.y;
+    return new Coord(x_int, y_int);
+}
+
 
 module.exports = GameState;
