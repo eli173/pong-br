@@ -16,8 +16,8 @@ var c = {
     ANGLE_THRESH: 0.2, //radians, needs to acct for various rotatings going on... can prolly wing it
     PADDLE_MVT_BONUS: 0.1, // why this value? who knows. the extra speed from paddles in motion
     // ball
-    MIN_INIT: 0.1,
-    MAX_INIT: 1, // initial speed constraints
+    MIN_INIT: 1,
+    MAX_INIT: 3, // initial speed constraints
     BALL_RADIUS: 0.5,
     MAX_SPEED: 15,
     SPEED_BUMP: 0.2,
