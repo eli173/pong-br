@@ -67,17 +67,30 @@ var handleWalls = function(ball, walls) {
     // modifies ball's velocity if it encounters an actual collision
     // wall is an endpoints
     for(var wall of walls) {
-	var next_spot = new Coord(ball.coord.x + ball.dx/c.FPS, ball.coord.y + ball.dy/c.FPS);
+	var next_spot = new Coord(ball.coord.x + ball.dx/c.FPS, ball.coord.y + ball.dy/c.FPS); // the next spot
 	if(segments_intersect(wall, new Endpoints(ball.coord, next_spot))) {
 	    //there's a collision
 	    var wall_normal = new Coord((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
 	    var normal_angle = Math.atan2(wall_normal.x, wall_normal.y);
-	    var vel_vec = new Coord(ball.dx, ball.dy);
-	    vel_vec.rotate(-normal_angle);
-	    vel_vec.y = -vel_vec.y; // i'm fairly certain it's x...
-	    vel_vec.rotate(normal_angle);
-	    ball.dx = vel_vec.x;
-	    ball.dy = vel_vec.y;
+	    // okay, i understand now, gotta do translations as well as the rotations
+	    // vector for next_spot needs to rotate, then be translated so that current ball spot is taken away,
+	    // putting vector with tail at the origin. then i do the reflection, and translate back, then rotate back,
+	    // and i might be good from there
+	    var ball_spot = new Coord(ball.coord.x, ball.coord.y);
+	    console.log("-------------------------------------");
+	    console.log(next_spot);
+	    ball_spot.rotate(-normal_angle);
+	    next_spot.rotate(-normal_angle);
+	    console.log(next_spot);
+	    next_spot.translate(-ball_spot.x, -ball_spot.y); // now it's a vector with tail at the origin i think
+	    console.log(next_spot);
+	    next_spot.x = -next_spot.x; // next translate back then rotate back then done?
+	    next_spot.translate(ball_spot.x, ball_spot.y);
+	    ball_spot.rotate(normal_angle);
+	    next_spot.rotate(normal_angle); // nope gotta subtract back to get it to be a proper 
+	    next_spot.translate(-ball_spot.x, -ball_spot.y); // now i'm good i think
+	    ball.dx = next_spot.x;
+	    ball.dy = next_spot.y;
 	    ball.speed_up();
 	    return true;
 	}
@@ -102,9 +115,10 @@ var handlePaddles = function(ball, lzs, paddles) {
 	    //there's a collision
 	    var wall_normal = new Coord((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
 	    var normal_angle = Math.atan2(wall_normal.x, wall_normal.y);
+	    // okay, i understand now. I have to do the vector addition and translation thing
 	    var vel_vec = new Coord(ball.dx, ball.dy);
 	    vel_vec.rotate(-normal_angle);
-	    vel_vec.y = -vel_vec.y; // i'm fairly certain it's x...
+	    vel_vec.x = -vel_vec.x; // i'm fairly certain it's x...
 	    if(paddle.direction == 'u')
 		vel_vec.y += c.PADDLE_MVT_BONUS;
 	    else if(paddle.direction == 'd')

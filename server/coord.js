@@ -28,5 +28,10 @@ Coord.prototype.rotate = function(th) {
     this.x = new_x;
     this.y = new_y;
 }
+Coord.prototype.translate = function (a,b) {
+    this.x += a;
+    this.y += b;
+}
+
 
 module.exports = Coord;
