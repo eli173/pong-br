@@ -32,18 +32,7 @@ function nearest_point_on_line(c, ep) {
 
 var segments_intersect = function(e1, e2) {
     // takes 2 sets of endpoints for the segments
-    // start with simple checks to rule things out
-    // don't need to do these actually, math not intensive plus crucial checks done afterwards
-    // if(Math.max(e1.f.x,e1.s.x) < Math.min(e2.f.x, e2.s.x))
-    // 	return false;
-    // if(Math.max(e1.f.y,e1.s.y) < Math.min(e2.f.y, e2.s.y))
-    // 	return false;
-    // if(Math.max(e2.f.x,e2.s.x) < Math.min(e1.f.x, e1.s.x))
-    // 	return false;
-    // if(Math.max(e2.f.y,e2.s.y) < Math.min(e1.f.y, e1.s.y))
-    // 	return false;
-    // now bounding rectangles at least overlap
-    // get the intersection of the /lines/, then check both rectangles for that point
+    // variables for easier reference, thinking
     var x1 = e1.f.x;
     var y1 = e1.f.y;
     var x2 = e1.s.x;
@@ -58,13 +47,14 @@ var segments_intersect = function(e1, e2) {
     // stolen from wikipedia
     var x_val = ((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
     var y_val = ((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
-    if(Math.min(e1.x, e2.x) < x_val && x_val < Math.max(e1.x, e2.x))
+
+    if(Math.min(x1, x2) < x_val && x_val < Math.max(x1, x2))
 	return false;
-    if(Math.min(e1.y, e2.y) < y_val && y_val < Math.max(e1.y, e2.y))
+    if(Math.min(y1, y2) < y_val && y_val < Math.max(y1, y2))
 	return false;
-    if(Math.min(e2.x, e1.x) < x_val && x_val < Math.max(e2.x, e1.x))
+    if(Math.min(x3, x4) < x_val && x_val < Math.max(x3, x4))
 	return false;
-    if(Math.min(e2.y, e1.y) < y_val && y_val < Math.max(e2.y, e1.y))
+    if(Math.min(y3, y4) < y_val && y_val < Math.max(y3, y4))
 	return false;
     return true;
 }
