@@ -41,6 +41,7 @@ GameState.prototype.update = function(inputs) {
 	this.paddles[i].move(inputs[this.paddles[i].id]); //hacky and bad, requires the inputs be
     }
     //move the balls
+    // can i increase efficiency or sensibility by doing this later? maybe. should i? unlikely rn
     for(var ball of this.balls) {
 	ball.coord.x += ball.dx;
 	ball.coord.y += ball.dy;

@@ -1,4 +1,8 @@
 
+WAIT SHIT I THINK THE MAX SPEEDS ARE DETERMINED BY THE FRAMERATE. WHOOPS. TOFIX
+
+
+
 The general outline of the game is that we have some large number of players $n$, arranged in a $2n$-sided regular polygon, where the player has their pong-space, and is surrounded by two walls. The walls primarily serve the purpose of having the game end nicely when there are two players left: it becomes a regular game of pong.
 
 I'm going to limit the number of players to 10 for the time being, I think anything with more than 20 sides might be a bit too much. 20 might be pushing it actually.

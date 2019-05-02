@@ -1,4 +1,5 @@
 
+const c = require('./constants.js');
 const Coord = require('./coord.js');
 
 const Endpoints = require('./endpoints.js'); // i guess slightly useful here
@@ -59,20 +60,59 @@ var segments_intersect = function(e1, e2) {
     return true;
 }
 
+
 var handleWalls = function(ball, walls) {
     // returns true if there's a collision
+    // modifies ball's velocity if it encounters an actual collision
+    // wall is an endpoints
     for(var wall of walls) {
-	var nearest = nearest_point_on_line(ball.coord, wall);
-	if(ball.coord.dist2(nearest) < (ball.radius)**2) { // there's a collision
-	    // so the midpoint of the wall gives a nice normal vector
-	    var norm = ball.coord;
+	var next_spot = new Coord(ball.coord.x + ball.dx, ball.coord.y + ball.dy);
+	if(segments_intersect(walls, new Endpoints(ball.coord, next_spot))) {
+	    //there's a collision
+	    var wall_normal = new Coord((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
+	    var normal_angle = Math.atan2(wall_normal.x, wall_normal.y);
+	    var vel_vec = new Coord(ball.dx, ball.dy);
+	    vel_vec.rotate(-normal_angle);
+	    vel_vec.x = -vel_vec.x; // i'm fairly certain it's x...
+	    vel_vec.rotate(normal_angle);
+	    ball.speed_up();
+	    return true;
 	}
     }
-
+    return false;
 }
 
-var handlePaddles = function() {
 
+var handlePaddles = function(ball, lzs, paddles) {
+    // same, but with paddles and speed movement bonus
+    // i iterate over lzs, get matching paddle
+    for(var lz of lzs) {
+	var paddle = this.paddles.find(p => p.id==lz.id);
+	if(paddle === undefined) { // this is badd...
+	    console.log("paddle not found...");
+	    return false;
+	}
+	var wall = paddle.getPaddlePoints(lz);
+	//
+	var next_spot = new Coord(ball.coord.x + ball.dx, ball.coord.y + ball.dy);
+	if(segments_intersect(walls, new Endpoints(ball.coord, next_spot))) {
+	    //there's a collision
+	    var wall_normal = new Coord((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
+	    var normal_angle = Math.atan2(wall_normal.x, wall_normal.y);
+	    var vel_vec = new Coord(ball.dx, ball.dy);
+	    vel_vec.rotate(-normal_angle);
+	    vel_vec.x = -vel_vec.x; // i'm fairly certain it's x...
+	    if(paddle.direction == 'u')
+		vel_vec.y += c.PADDLE_MVT_BONUS;
+	    else if(paddle.direction == 'd')
+		vel_vec.y -= c.PADDLE_MVT_BONUS;
+	    vel_vec.rotate(normal_angle);
+	    ball.speed_up();
+	    return true;
+	}
+    }
+    return false;
 }
+
 
 module.exports = {handleWalls: handleWalls, handlePaddles, handlePaddles};
