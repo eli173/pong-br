@@ -10,7 +10,7 @@ var c = {
     // gamestate
     DYING_TIME_IN_FRAMES: 100,
     BOARD_RADIUS: 10,
-    OOB_THRESH: 1, // out-of-bounds threshold
+    OOB_THRESH: 4, // out-of-bounds threshold
     ANGLE_THRESH: 0.2, //radians, needs to acct for various rotatings going on... can prolly wing it
     PADDLE_MVT_BONUS: 0.1, // why this value? who knows. the extra speed from paddles in motion
     // ball

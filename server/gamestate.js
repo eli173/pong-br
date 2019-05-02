@@ -62,60 +62,13 @@ GameState.prototype.update = function(inputs) {
 
 	// below here probably requires changes
 	// (check the fixt edges first, then the paddles I guess
-	for(var i=0; (i<walls.length) && !collided; i++) {
-	    var nearest = nearest_point_on_line(ball.coord, walls[i]);
-	    var dist2 = ball.coord.dist2(nearest);
-	    if(dist2 < (ball.radius*ball.radius)) {
-		// we have a collision!
-		collided = true;
-		var vec = [walls[i].f.x-walls[i].s.x, walls[i].f.y-walls[i].s.y];
-		var slope_angle = Math.atan2(vec[1],vec[0]);
-		// rotate, reflect, rotate back
-		var vel_coord = new Coord(ball.dx, ball.dy);
-		vel_coord.rotate(-slope_angle);
-		vel_coord.y = -vel_coord.y;
-		vel_coord.rotate(slope_angle);
-		ball.dx = vel_coord.x;
-		ball.dy = vel_coord.y;
-		// increase speed slightly
-		ball.speed_up();
-	    }  
-	}
-	for(var lz of livingzones) {
-	    // get corresponding paddle
-	    // should be guaranteed to find one.... so...
-	    var paddle = this.paddles.find(p => p.id ==lz.id);
-	    if((paddle !== undefined) && !collided) {
-		var padends = paddle.getPaddlePoints(lz);
-		var nearest = nearest_point_on_line(ball.coord, padends);
-		var dist2 = ball.coord.dist2(nearest);
-		if(dist2 < (ball.radius*ball.radius)) {
-		    // we have a collision!
-		    collided = true;
-		    var vec = [padends.f.x-padends.s.x, padends.f.y-padends.s.y];
-		    var slope_angle = Math.atan2(vec[1],vec[0]);
-		    // rotate, reflect, rotate back
-		    var vel_coord = new Coord(ball.dx, ball.dy);
-		    vel_coord.rotate(-slope_angle);
-		    vel_coord.y = -vel_coord.y;
-		    // note: any 'too fast' errors will be solved in the 'speed_up' method, so i need not worry here
-		    if(paddle.direction == 'u') { 
-			vel_coord.x += c.PADDLE_MVT_BONUS;
-		    }
-		    else if(paddle.direction == 'd') {
-			vel_coord.x -= c.PADDLE_MVT_BONUS;
-		    }
-		    vel_coord.rotate(slope_angle);
-		    ball.dx = vel_coord.x;
-		    ball.dy = vel_coord.y;
-		    // increase speed slightly
-		    ball.speed_up();
-		}  
-	    }
-	}
-
-
+	if(collisions.handleWalls(ball, walls))
+	    continue;
+	if(collisions.handlePaddles(balls, livingzones, this.paddles))
+	    continue;
+	// i put that last continue but there's nothing left to do...
     }
+    
     // shrink the existing dead zones for the future
     for(var d of this.dead) {
 	if(d.time > 0)

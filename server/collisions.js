@@ -67,8 +67,9 @@ var handleWalls = function(ball, walls) {
     // wall is an endpoints
     for(var wall of walls) {
 	var next_spot = new Coord(ball.coord.x + ball.dx, ball.coord.y + ball.dy);
-	if(segments_intersect(walls, new Endpoints(ball.coord, next_spot))) {
+	if(segments_intersect(wall, new Endpoints(ball.coord, next_spot))) {
 	    //there's a collision
+	    console.log("int");
 	    var wall_normal = new Coord((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
 	    var normal_angle = Math.atan2(wall_normal.x, wall_normal.y);
 	    var vel_vec = new Coord(ball.dx, ball.dy);
