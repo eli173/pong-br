@@ -35,3 +35,4 @@ server/node_modules/*
 /web/draw.js~
 /web/main.js~
 /web/play.html~
+/server/collisions.js~
