@@ -49,14 +49,15 @@ var segments_intersect = function(e1, e2) {
     var x_val = ((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
     var y_val = ((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
 
-    if(Math.min(x1, x2) < x_val && x_val < Math.max(x1, x2))
-	return false;
-    if(Math.min(y1, y2) < y_val && y_val < Math.max(y1, y2))
-	return false;
-    if(Math.min(x3, x4) < x_val && x_val < Math.max(x3, x4))
-	return false;
-    if(Math.min(y3, y4) < y_val && y_val < Math.max(y3, y4))
-	return false;
+
+    if(x_val < Math.min(x1,x2)) return false;
+    if(x_val > Math.max(x1,x2)) return false;
+    if(y_val < Math.min(y1,y2)) return false;
+    if(y_val > Math.max(y1,y2)) return false;
+    if(x_val < Math.min(x3,x4)) return false;
+    if(x_val > Math.max(x3,x4)) return false;
+    if(y_val < Math.min(y3,y4)) return false;
+    if(y_val > Math.max(y3,y4)) return false;
     return true;
 }
 
@@ -66,16 +67,17 @@ var handleWalls = function(ball, walls) {
     // modifies ball's velocity if it encounters an actual collision
     // wall is an endpoints
     for(var wall of walls) {
-	var next_spot = new Coord(ball.coord.x + ball.dx, ball.coord.y + ball.dy);
+	var next_spot = new Coord(ball.coord.x + ball.dx/c.FPS, ball.coord.y + ball.dy/c.FPS);
 	if(segments_intersect(wall, new Endpoints(ball.coord, next_spot))) {
 	    //there's a collision
-	    console.log("int");
 	    var wall_normal = new Coord((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
 	    var normal_angle = Math.atan2(wall_normal.x, wall_normal.y);
 	    var vel_vec = new Coord(ball.dx, ball.dy);
 	    vel_vec.rotate(-normal_angle);
-	    vel_vec.x = -vel_vec.x; // i'm fairly certain it's x...
+	    vel_vec.y = -vel_vec.y; // i'm fairly certain it's x...
 	    vel_vec.rotate(normal_angle);
+	    ball.dx = vel_vec.x;
+	    ball.dy = vel_vec.y;
 	    ball.speed_up();
 	    return true;
 	}
@@ -88,26 +90,28 @@ var handlePaddles = function(ball, lzs, paddles) {
     // same, but with paddles and speed movement bonus
     // i iterate over lzs, get matching paddle
     for(var lz of lzs) {
-	var paddle = this.paddles.find(p => p.id==lz.id);
+	var paddle = paddles.find(p => p.id==lz.id);
 	if(paddle === undefined) { // this is badd...
 	    console.log("paddle not found...");
 	    return false;
 	}
 	var wall = paddle.getPaddlePoints(lz);
 	//
-	var next_spot = new Coord(ball.coord.x + ball.dx, ball.coord.y + ball.dy);
-	if(segments_intersect(walls, new Endpoints(ball.coord, next_spot))) {
+	var next_spot = new Coord(ball.coord.x + ball.dx/c.FPS, ball.coord.y + ball.dy/c.FPS);
+	if(segments_intersect(wall, new Endpoints(ball.coord, next_spot))) {
 	    //there's a collision
 	    var wall_normal = new Coord((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
 	    var normal_angle = Math.atan2(wall_normal.x, wall_normal.y);
 	    var vel_vec = new Coord(ball.dx, ball.dy);
 	    vel_vec.rotate(-normal_angle);
-	    vel_vec.x = -vel_vec.x; // i'm fairly certain it's x...
+	    vel_vec.y = -vel_vec.y; // i'm fairly certain it's x...
 	    if(paddle.direction == 'u')
 		vel_vec.y += c.PADDLE_MVT_BONUS;
 	    else if(paddle.direction == 'd')
 		vel_vec.y -= c.PADDLE_MVT_BONUS;
 	    vel_vec.rotate(normal_angle);
+	    ball.dx = vel_vec.x;
+	    ball.dy = vel_vec.y;
 	    ball.speed_up();
 	    return true;
 	}
@@ -116,4 +120,4 @@ var handlePaddles = function(ball, lzs, paddles) {
 }
 
 
-module.exports = {handleWalls: handleWalls, handlePaddles, handlePaddles};
+module.exports = {handleWalls: handleWalls, handlePaddles, handlePaddles, segments_intersect: segments_intersect};

@@ -17,6 +17,10 @@ var AnglePair = function(f,s,id) {
     this.id = id;
 }
 
+Endpoints.prototype.getLength = function() {
+    return Math.sqrt(this.f.dist2(this.s));
+}
+
 Endpoints.prototype.getAngles = function() {
     // gets an anglepair for the endpoints. does assume the first angle is before second
     var fst = Math.atan2(this.f.y, this.f.x);

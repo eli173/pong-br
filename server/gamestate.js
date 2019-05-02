@@ -40,12 +40,6 @@ GameState.prototype.update = function(inputs) {
     for(var i=0;i<this.paddles.length;i++) {
 	this.paddles[i].move(inputs[this.paddles[i].id]); //hacky and bad, requires the inputs be
     }
-    //move the balls
-    // can i increase efficiency or sensibility by doing this later? maybe. should i? unlikely rn
-    for(var ball of this.balls) {
-	ball.coord.x += ball.dx;
-	ball.coord.y += ball.dy;
-    }
     //
     var endpoints = field.genAllEndpoints(this.numPlayers, this.dead);
     var livingzones = endpoints.filter(e => (e.id != -1));
@@ -56,16 +50,18 @@ GameState.prototype.update = function(inputs) {
 	var collided = false;
 	// first, see if the ball is moving towards the center (should solve most problems with things
 	var currd2 = ball.coord.dist2origin();
-	var nextd2 = new Coord(ball.coord.x + ball.dx, ball.coord.y + ball.dy).dist2origin();
+	var nextd2 = new Coord(ball.coord.x + ball.dx/c.FPS, ball.coord.y + ball.dy/c.FPS).dist2origin();
 	if(nextd2 < currd2)
 	    continue;
 
 	// below here probably requires changes
 	// (check the fixt edges first, then the paddles I guess
-	if(collisions.handleWalls(ball, walls))
+	if(collisions.handleWalls(ball, walls)) {
 	    continue;
-	if(collisions.handlePaddles(balls, livingzones, this.paddles))
+	}
+	if(collisions.handlePaddles(ball, livingzones, this.paddles)) {
 	    continue;
+	}
 	// i put that last continue but there's nothing left to do...
     }
     
@@ -111,6 +107,11 @@ GameState.prototype.update = function(inputs) {
     // spawn new balls? sure why not. maybe tweak this for more or less fun later on
     if(this.balls.length < (this.numPlayers-this.dead.length)-1) {
 	this.balls.push(new Ball());
+    }
+        //move the balls
+    for(var ball of this.balls) {
+	ball.coord.x += ball.dx/c.FPS;
+	ball.coord.y += ball.dy/c.FPS;
     }
 }
 

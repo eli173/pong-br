@@ -1,10 +1,12 @@
 
 
+var mspf = 100;
 var c = {
     // matchmaker
     WS_PORT: 6789,
-    NUM_PLAYERS: 8,
-    MS_PER_FRAME: 100,
+    NUM_PLAYERS: 4,
+    MS_PER_FRAME: mspf,
+    FPS: 1000/mspf,
     WAIT_TIME: 60000, // 1 minute
     MAX_GAMES: 5, // the most games allowed to go on at once, to be tweaked as needed for purposes
     // gamestate
