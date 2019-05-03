@@ -17,7 +17,7 @@ var main = function() { // starts everything, gets us going, setup ish
     ctx = canvas.getContext('2d');
     // change the 1's to zoom in i think.. todo
     ctx.transform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2); // change to setTransform?
-
+    ctx.lineWidth = ctx.lineWidth/5;
     // this is just to have everything go easily for testing
     var othersockets = [];
     for(var i=0; i<c.NUM_PLAYERS -1; i++) {
