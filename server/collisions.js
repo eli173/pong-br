@@ -4,6 +4,10 @@ const Coord = require('./coord.js');
 
 const Endpoints = require('./endpoints.js'); // i guess slightly useful here
 
+const Matrix = require('./matrix.js');
+
+const Vec = Coord; // hah
+
 /*
  * okay, game plan:
  * we look at line segments: the segments from the endpoints,
@@ -12,24 +16,6 @@ const Endpoints = require('./endpoints.js'); // i guess slightly useful here
  * once that is done, I still need to fix the bounce issue.
  * dunno if that part is good or not. i suspect it's okay
 */
-
-function nearest_point_on_line(c, ep) {
-    // finds the point on the line defined by ep closest to center c
-    if(ep.f.x == ep.s.x) {
-	// vertical line, undef slope
-	return new Coord(ep.f.x, c.y);
-    }
-    if(ep.f.y == ep.s.y) {
-	// horizontal line, zero slope
-	return new Coord(c.x, ep.f.y);
-    }
-    var sl = (ep.f.y-ep.s.y)/(ep.f.x-ep.s.x);
-    var sr = 1/sl;
-    var x_int = (sl*ep.f.x - sr*c.x + c.y - ep.f.y)/(sl-sr);
-    var y_int = sr*(x_int-c.x) + c.y;
-    return new Coord(x_int, y_int);
-}
-
 
 var segments_intersect = function(e1, e2) {
     // takes 2 sets of endpoints for the segments
@@ -62,6 +48,12 @@ var segments_intersect = function(e1, e2) {
 }
 
 
+Vec.prototype.normalize = function(vec) {
+    var mag = Math.sqrt(this.x**2 + this.y**2);
+    this.x = this.x/mag;
+    this.y = this.y/mag;
+}
+
 var handleWalls = function(ball, walls) {
     // returns true if there's a collision
     // modifies ball's velocity if it encounters an actual collision
@@ -70,27 +62,20 @@ var handleWalls = function(ball, walls) {
 	var next_spot = new Coord(ball.coord.x + ball.dx/c.FPS, ball.coord.y + ball.dy/c.FPS); // the next spot
 	if(segments_intersect(wall, new Endpoints(ball.coord, next_spot))) {
 	    //there's a collision
-	    var wall_normal = new Coord((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
-	    var normal_angle = Math.atan2(wall_normal.x, wall_normal.y);
-	    // okay, i understand now, gotta do translations as well as the rotations
-	    // vector for next_spot needs to rotate, then be translated so that current ball spot is taken away,
-	    // putting vector with tail at the origin. then i do the reflection, and translate back, then rotate back,
-	    // and i might be good from there
-	    var ball_spot = new Coord(ball.coord.x, ball.coord.y);
-	    console.log("-------------------------------------");
-	    console.log(next_spot);
-	    ball_spot.rotate(-normal_angle);
-	    next_spot.rotate(-normal_angle);
-	    console.log(next_spot);
-	    next_spot.translate(-ball_spot.x, -ball_spot.y); // now it's a vector with tail at the origin i think
-	    console.log(next_spot);
-	    next_spot.x = -next_spot.x; // next translate back then rotate back then done?
-	    next_spot.translate(ball_spot.x, ball_spot.y);
-	    ball_spot.rotate(normal_angle);
-	    next_spot.rotate(normal_angle); // nope gotta subtract back to get it to be a proper 
-	    next_spot.translate(-ball_spot.x, -ball_spot.y); // now i'm good i think
-	    ball.dx = next_spot.x;
-	    ball.dy = next_spot.y;
+	    var wall_normal = new Vec((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
+	    wall_normal.normalize();
+	    var wall_parallel = new Vec(wall.s.x - wall.f.x, wall.s.y - wall.f.y);
+	    wall_parallel.normalize();
+	    // there's our basis vectors
+	    var vel = new Vec(ball.dx, ball.dy);
+	    var tr_mat = new Matrix(wall_parallel.x, wall_parallel.y, wall_normal.x, wall_normal.y);
+	    var vel_in_basis = tr_mat.vmul(vel);
+	    // now in the basis this is easy, I just swap the right variable, then transform back, and reassign!
+	    // the x-coord is along the wall, y is along the normal i think, sooo...
+	    vel_in_basis.y = -vel_in_basis.y;
+	    vel = tr_mat.inverse().vmul(vel_in_basis);
+	    ball.dx = vel.x;
+	    ball.dy = vel.y;
 	    ball.speed_up();
 	    return true;
 	}
@@ -110,22 +95,28 @@ var handlePaddles = function(ball, lzs, paddles) {
 	}
 	var wall = paddle.getPaddlePoints(lz);
 	//
-	var next_spot = new Coord(ball.coord.x + ball.dx/c.FPS, ball.coord.y + ball.dy/c.FPS);
+	var next_spot = new Coord(ball.coord.x + ball.dx/c.FPS, ball.coord.y + ball.dy/c.FPS); // the next spot
 	if(segments_intersect(wall, new Endpoints(ball.coord, next_spot))) {
 	    //there's a collision
-	    var wall_normal = new Coord((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
-	    var normal_angle = Math.atan2(wall_normal.x, wall_normal.y);
-	    // okay, i understand now. I have to do the vector addition and translation thing
-	    var vel_vec = new Coord(ball.dx, ball.dy);
-	    vel_vec.rotate(-normal_angle);
-	    vel_vec.x = -vel_vec.x; // i'm fairly certain it's x...
+	    var wall_normal = new Vec((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
+	    wall_normal.normalize();
+	    var wall_parallel = new Vec(wall.s.x - wall.f.x, wall.s.y - wall.f.y);
+	    wall_parallel.normalize();
+	    // there's our basis vectors
+	    var vel = new Vec(ball.dx, ball.dy);
+	    var tr_mat = new Matrix(wall_parallel.x, wall_parallel.y, wall_normal.x, wall_normal.y);
+	    var vel_in_basis = tr_mat.vmul(vel);
+	    // now in the basis this is easy, I just swap the right variable, then transform back, and reassign!
+	    // the x-coord is along the wall, y is along the normal i think, sooo...
+	    vel_in_basis.y = -vel_in_basis.y;
+	    // do the paddle bonus here too
 	    if(paddle.direction == 'u')
-		vel_vec.y += c.PADDLE_MVT_BONUS;
+		vel_in_basis.x += c.PADDLE_MVT_BONUS;
 	    else if(paddle.direction == 'd')
-		vel_vec.y -= c.PADDLE_MVT_BONUS;
-	    vel_vec.rotate(normal_angle);
-	    ball.dx = vel_vec.x;
-	    ball.dy = vel_vec.y;
+		vel_in_basis.x -= c.PADDLE_MVT_BONUS;
+	    vel = tr_mat.inverse().vmul(vel_in_basis);
+	    ball.dx = vel.x;
+	    ball.dy = vel.y;
 	    ball.speed_up();
 	    return true;
 	}
