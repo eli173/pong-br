@@ -8,9 +8,10 @@ var input = 'x';
 function keypressHandler(evt, isdn) {
     // "is down" (is a keydown)
     var thekey = 'x';
-    if(evt.keyCode == '87') // 'w'
+    // small but significant note: everything here is rotated by a half circle, so everything is upside-down
+    if(evt.keyCode == '83') // 's'
 	thekey = 'u';
-    else if(evt.keyCode == '83') // 's'
+    else if(evt.keyCode == '87') // 'w'
 	thekey = 'd';
     
     if(!isdn && thekey==keystate) {
@@ -24,6 +25,14 @@ function keypressHandler(evt, isdn) {
 	input = thekey;
     }
 }
+
+
+function touchHandler(evt) {
+    // deals with touch events on the canvas, todo when I can get my hands on documentation lol
+}
+
+
+
 
 function keySender(ws) {
     if(keystate != 'x')

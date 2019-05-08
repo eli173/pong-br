@@ -1,2 +1,12 @@
 
-Pretty close to done. I want to do all input management in the same separate file (incl. mobile &c). Should be nice to compartmentalize that way. I don't need to do all that much for the input, just do key handling, and also try to get an easy touch overlay down.
+OKAY
+
+have an intro page, and then let the 'play' page I already have up be the whole thing.
+
+I should check referrers, so that if someone links to/goes straight to the 'play' page they get sent back to the page beforehand. Also, this lets me make the 'play' page the whole webapp, which makes for very easy reverse proxy load balancing shenanigans. Plus this kinda enforces a pleasant splash page with directions and whatever.
+
+At this point it's cleaning and polish. I also /need/ to get the out-of-bounds detection going much better. I think a simple algorithm that just detects the inside of a (convex) polygon (or distance to one) will be good enough, as that's really all there is to this game (and yes, it is always convex).
+
+Writing this on a plane, so most of this work will be left for later I guess. I can do some nice error checking and game ending and so forth now.
+
+Oh shit, I have to figure out how to count how many games are ongoing. I'll just use a global variable? Or did I want to do player connections? Actually a global for current games might be pretty reasonable.

@@ -8,8 +8,9 @@ const field = require('./field.js');
 const Paddle = require('./paddles.js');
 const collisions = require('./collisions.js');
 
-function Dead(id) {
+function Dead(id, pl) {
     this.id = id;
+    this.place = pl;
     this.time = c.DYING_TIME_IN_FRAMES;
 }
 
@@ -95,7 +96,8 @@ GameState.prototype.update = function(inputs) {
 	    if((ab > a1) && (ab < a2)) {
 		// check if not already dead (in case multi balls out at same time etc)
 		if(!this.dead.some(x => x.id == ang.id)) {
-		    this.dead.push(new Dead(ang.id));
+		    var place = this.numPlayers - this.dead.length;
+		    this.dead.push(new Dead(ang.id, place));
 		    /* TODO: socket cleanup for dead player */
 		}
 	    }
@@ -124,10 +126,11 @@ GameState.prototype.getState = function() {
     var thedead = this.dead;
     var totnum = this.numPlayers;
     var theobject = {n: totnum, dead: thedead, paddles: newpads, balls: newballs};
+    // maybe a proper constructor would be good here...
     return theobject;
 }
 
-
+// oh can I just trash this? yeah totally todo
 function nearest_point_on_line(c, ep) {
     // finds the point on the line defined by ep closest to center c
     if(ep.f.x == ep.s.x) {

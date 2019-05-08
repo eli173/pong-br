@@ -25,6 +25,19 @@ Game.prototype.getNextFrame = function() {
 	state.id = i;
 	this.players[i].send_data(JSON.stringify(state));
     }
+
+    // check for life and death
+    var dead_ids = state.dead.map(d => d.id);
+    if(dead_ids.length == state.n-1) {
+	// game over! tell everyone and end the cycle
+	clearInterval(this.timeout);
+	var sum = dead_ids.reduce((x,y) => x+y);
+	var winner = state.n*(state.n-1)/2 - sum; // note the minus is bc we start at zero yeah?
+	for(var i=0; i<this.players.length;i++) {
+	    var tosend = (i==winner) ? 'w' : 'l';
+	    this.players[i].send_data(tosend); // w for winner, l for loser cuz why not?
+	}
+    }
 }
 
 

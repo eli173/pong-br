@@ -7,18 +7,32 @@ wallcolor = 'rgb(100,100,0)';
 pcolor = 'rgb(0,0,200)';
 bcolor = 'rgb(100,100,100)';
 xcolor = 'rgb(200,0,200)';
+playercolor = 'rgb(0,100,200)';
 
+
+var latest_theta = 0;
 
 // main function, given everything from the game state, draws on the given context
 var draw = function(state, ctx) {
     clearCanvas(ctx);
-    
+
     // okay, gotta get the endpoints, then draw the walls,
     // then draw the balls,
     // then finally the hard part is the paddles
-    //console.log(state);
 
     var endpoints = genAllEndpoints(state.n, state.dead);
+
+    // set rotation
+    // check for dead first
+    var isDead = state.dead.some(d => d.id==state.id);
+    if(!isDead) {
+	var rot_ep = endpoints.find(e => e.id == state.id); // has to have smth right? yeah if alive i guess?
+	var rot_mp = new Coord((rot_ep.f.x+rot_ep.s.x)/2, (rot_ep.f.y+rot_ep.s.y)/2);
+	var rot_th = Math.atan2(rot_mp.y, rot_mp.x) + Math.PI;
+	latest_theta = rot_th;
+    }
+    ctx.transform(Math.cos(latest_theta),-Math.sin(latest_theta),Math.sin(latest_theta),Math.cos(latest_theta),0,0) // this is to rotate it so that the player paddle is in the right place
+
     var livingzones = endpoints.filter(e => (e.id != -1) && (!state.dead.some(d=>(d.id==e.id))));
     var walls = endpoints.filter(e => (e.id==-1) || state.dead.some(d=>(d.id==e.id)));
     //draw walls
@@ -44,6 +58,9 @@ var draw = function(state, ctx) {
 	// cool this is way simpler since we know these are all alive
 	var pps = getPaddlePoints(paddle, eps);
 	drawLine(ctx, pcolor, pps.f, pps.s);
+    }
+    if(isDead) {
+	drawOverlay(ctx, state.dead.find(d => d.id == state.id).place);
     }
 }
 
@@ -91,6 +108,11 @@ var drawLine = function(ctx, color, c1, c2) {
     ctx.stroke();
     ctx.restore();
 }
+    
+var drawOverlay = function(ctx, place) {
+    
+}
+	
 
 var clearCanvas = function(ctx) {
     ctx.save();
