@@ -110,7 +110,15 @@ var drawLine = function(ctx, color, c1, c2) {
 }
     
 var drawOverlay = function(ctx, place) {
-    
+    ctx.save();
+    //ctx.font = what should it equal? mind sizes on mobile
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.fillStyle = 'rgba(225,225,225,100)'
+    var string1 = "you placed: " + place;
+    var string2 = "click or press =g= to play again"
+    ctx.fillText(string1, 0, 100);
+    ctx.fillText(string2, 0, 200); // magic number...
+    ctx.restore();
 }
 	
 

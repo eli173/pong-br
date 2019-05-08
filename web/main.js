@@ -52,6 +52,7 @@ var main = function() { // starts everything, gets us going, setup ish
 	    if(status) {
 		// add event listener if dead
 		canvas.onclick = function(e) {location.reload()} // okay, outside of 'input' file...
+		canvas.onkeydown = function(e) {if(e.keyCode == '71') location.reload()};
 	    }
 	}
 	
