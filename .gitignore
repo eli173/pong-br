@@ -38,3 +38,5 @@ server/node_modules/*
 /server/collisions.js~
 /server/matrix.js~
 /web/input.js~
+/server/health.js~
+/server/robot.js~

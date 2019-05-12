@@ -3,7 +3,7 @@
 function Player(ws) {
     this.status = 'x';
     this.socket = ws;
-    this.id = -1; // id just used for keeping track of deaths and whatnot
+    this.id = -1; // is this used? can i just delete?
     var _this = this;
     var fn = function(msg) {
 	_this.listener(msg);
@@ -25,8 +25,12 @@ Player.prototype.listener = function(msg) {
 }
 
 Player.prototype.send_data = function(data) {
+    if((typeof data) == 'string')
+	var tosend = data;
+    else
+	var tosend = JSON.stringify(data);
     if(this.socket.readyState==this.socket.OPEN) {
-	this.socket.send(data);
+	this.socket.send(tosend);
     }
 }
 
@@ -36,5 +40,8 @@ Player.prototype.get_status = function() {
     return stat;
 }
 
+Player.prototype.close = function() {
+    this.socket.close(1000);
+}
 
 module.exports = Player;

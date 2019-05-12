@@ -21,15 +21,13 @@ var main = function() { // starts everything, gets us going, setup ish
     ctx.lineWidth = ctx.lineWidth/5;
 
     
-    // this is just to have everything go easily for testing
-    var othersockets = [];
-    for(var i=0; i<c.NUM_PLAYERS -1; i++) {
-	othersockets.push(new WebSocket(prefixurl));
-    }
-
     
     theSocket = new WebSocket(prefixurl);
     theSocket.onmessage = function(e) {
+	if(e.data == "busy") {
+	    onBusy();
+	    return;
+	}
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	// change the 1's to zoom in i think.. todo
@@ -66,5 +64,8 @@ var main = function() { // starts everything, gets us going, setup ish
     theSocket.onclose = function(e) {clearInterval(interval)};
 }
 
+var onBusy = function() {
+    console.log("busy, try again later");
+}
 
 window.addEventListener("DOMContentLoaded", e => main());
