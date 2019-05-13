@@ -1,15 +1,13 @@
 
 
-var mspf = 100;
 var c = {
     // matchmaker
     WS_PORT: 6789,
     NUM_PLAYERS: 4,
-    MS_PER_FRAME: mspf,
-    FPS: 1000/mspf,
+    FPS: 30,
     WAIT_TIME: 60000, // 1 minute
-    MAX_GAMES: 5, // the most games allowed to go on at once, to be tweaked as needed for purposes
-    ROBO_TIME: 120, // time in seconds before filling out with robots
+    MAX_GAMES: 2, // the most games allowed to go on at once, to be tweaked as needed for purposes
+    ROBO_TIME: 30, // time in seconds before filling out with robots
     // gamestate
     DYING_TIME_IN_FRAMES: 100,
     BOARD_RADIUS: 10,

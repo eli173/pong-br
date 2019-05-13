@@ -1,0 +1,7 @@
+list of things i should still do:
+- death screens
+- waiting message
+- fix collisions
+- fix oob
+- splash page
+- fiddle with variables to optimize fun

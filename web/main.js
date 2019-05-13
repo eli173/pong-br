@@ -21,6 +21,12 @@ var main = function() { // starts everything, gets us going, setup ish
     ctx.lineWidth = ctx.lineWidth/5;
 
     
+    // this is just to have everything go easily for testing
+    var othersockets = [];
+    for(var i=0; i<c.NUM_PLAYERS -1; i++) {
+	othersockets.push(new WebSocket(prefixurl));
+    }
+
     
     theSocket = new WebSocket(prefixurl);
     theSocket.onmessage = function(e) {

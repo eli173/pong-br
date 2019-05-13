@@ -32,14 +32,14 @@ var manage_incoming = function(ws) {
     if(players.length >= c.NUM_PLAYERS) {
 	game = new Game(players.slice(0, c.NUM_PLAYERS));
 	health.inc();
-	game.start(c.MS_PER_FRAME);
+	game.start(1000/c.FPS);
 	players = players.slice(c.NUM_PLAYERS); // just security in case >n connections at once
 	// i think js lack-of-threading makes it impossible for that to happen though
 	clearTimeout(timeout);
 	timeout = null;
     }
     else if(timeout == null) {
-	setTimeout(robot_adder, c.ROBO_TIME);
+	setTimeout(robot_adder, c.ROBO_TIME*1000);
     }
 }
 
@@ -50,7 +50,7 @@ var robot_adder = function() {
     }
     game = new Game(players.slice()); // array copy
     health.inc();
-    game.start(c.MS_PER_FRAME);
+    game.start(1000/c.FPS);
     players = [];
 }
 //
