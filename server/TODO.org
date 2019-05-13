@@ -1,8 +1,10 @@
 list of things i should still do:
 - fix collisions
-- fix oob
-- splash page
+
+sorta extra/for later/unsure:
 - fiddle with variables to optimize fun
-- TOUCH
-- fix game not ending with just robots (is this actually broken?)
+- make sure files are in the right place and urls are appropriate for server
 - double check all on-screen messages for fitting (look to the 'magic number...' comment)
+- fix game not ending with just robots (is this actually broken?)
+- polish
+- debug touch

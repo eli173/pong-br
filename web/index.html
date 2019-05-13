@@ -1,17 +1,26 @@
 <!doctype html>
 <html>
   <head>
-    <title>Pong Battle Royale</title>
-    <script type="text/javascript" src="socket.js"></script>
-    <script type="text/javascript" src="drawing.js"></script>
+    <title>Pong: Battle Royale!</title>
+    <style type="text/css">
+      body { background-color: black; }
+      #content { width: 70%;
+	      display: block;
+	      margin: 0 auto;
+	      color: #fff8f8;
+	      text-align: center;
+	       }
+      #b {
+	  background-color: #aa2200;
+	  color: #00aa22;
+      }
+    </style>
   </head>
   <body>
-    <button id="play" type="button" name="play">
-      Play
-    </button>
-    <button id="stop" type="button" name="play">
-      stop
-    </button>
-    <canvas id="game" width="300" height="300"></canvas>
+    <div id="content">
+      <h3>Pong: Battle Royale!</h3>
+      <p>Yes, this is a battle royale version of pong. You are matched up with a large amount of other players in a shrinking arena, and your goal is to survive to the very end. Use 'w' and 's', 'k' and 'j', or the arrow keys to move your paddle with the keyboard, or touch the top or bottom half of the screen to move up or down with a touchscreen.</p>
+      <a href="play.html" id="b">PLAY</a>
+    </div>
   </body>
 </html>

@@ -116,7 +116,7 @@ var drawOverlay = function(ctx, place) {
     ctx.fillStyle = 'rgba(225,225,225,100)'
     ctx.textAlign = 'center';
     ctx.fillText("you placed: " + place, 0, -7.5);
-    ctx.fillText("press =g= or click", 0, 0); // magic numbers...
+    ctx.fillText("press =g= or click/tap", 0, 0); // magic numbers...
     ctx.fillText("to play again", 0, 7.5);
     ctx.restore();
 }
@@ -137,10 +137,19 @@ var drawOver = function(ctx) {
     ctx.setTransform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2);
     ctx.fillStyle = 'rgba(225,225,225,100)'
     ctx.textAlign = 'center';
-    ctx.fillText("press =g= or click", 0, -5);
+    ctx.fillText("press =g= or click/tap", 0, -5);
     ctx.fillText("to play again", 0, 5);
     ctx.restore();
+}
 
+var drawFail= function(ctx) {
+    ctx.save();
+    ctx.setTransform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2);
+    ctx.fillStyle = 'rgba(225,225,225,100)'
+    ctx.textAlign = 'center';
+    ctx.fillText("connection error", 0, -5);
+    ctx.fillText("try again perhaps", 0, 5);
+    ctx.restore();
 }
 
 var drawBusy = function(ctx) {
@@ -151,10 +160,33 @@ var drawBusy = function(ctx) {
     ctx.fillStyle = 'rgba(225,225,225,100)';
     ctx.textAlign = 'center';
     ctx.fillText("server is too busy now", 0, -7.5);
-    ctx.fillText("press =g= or click", 0, 0); // magic numbers...
+    ctx.fillText("press =g= or click/tap", 0, 0); // magic numbers...
     ctx.fillText("to play again", 0, 7.5);
-    ctx.restore();
-    
+    ctx.restore();    
+}
+
+var drawWin = function(ctx) {
+    clearCanvas(ctx);
+    ctx.save();
+    ctx.setTransform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2);
+    ctx.fillStyle = 'rgba(225,225,225,100)';
+    ctx.textAlign = 'center';
+    ctx.fillText("WINNER!", 0, -7.5);
+    ctx.fillText("press =g= or click/tap", 0, 0); // magic numbers...
+    ctx.fillText("to play again", 0, 7.5);
+    ctx.restore();    
+}
+
+var draw2nd = function(ctx) {
+    clearCanvas(ctx);
+    ctx.save();
+    ctx.setTransform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2);
+    ctx.fillStyle = 'rgba(225,225,225,100)';
+    ctx.textAlign = 'center';
+    ctx.fillText("second place!", 0, -7.5);
+    ctx.fillText("press =g= or click/tap", 0, 0); // magic numbers...
+    ctx.fillText("to play again", 0, 7.5);
+    ctx.restore();    
 }
 
 var clearCanvas = function(ctx) {

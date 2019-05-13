@@ -75,8 +75,9 @@ GameState.prototype.update = function(inputs) {
     // check for deaths
     // i don't need to check where any of the paddles are, I just need to check the spaces behind the paddles (±)
 
-    var zero = new Coord(0,0);
-    var oobs = this.balls.filter(b => (b.coord.dist2(zero)>(c.BOARD_RADIUS+c.OOB_THRESH)**2));
+    //    var zero = new Coord(0,0);
+    //    var oobs = this.balls.filter(b => (b.coord.dist2(zero)>(c.BOARD_RADIUS+c.OOB_THRESH)**2));
+    var oobs = this.balls.filter(b => endpoints.some(e => !left_of(b.coord, e))); // ball to the right of smth
     var angs = livingzones.map(eps => eps.getAngles());
     //var angs = field.angles(this.numPlayers, this.dead, c.ANGLE_THRESH);
     for(var oob of oobs) {
@@ -102,10 +103,14 @@ GameState.prototype.update = function(inputs) {
 		}
 	    }
 	}
-	// remove the ball
-	var idx = this.balls.indexOf(oob);
+    }
+    // remove far away balls
+    var oob2 = this.balls.filter(b => (b.coord.dist2origin()>(c.BOARD_RADIUS+c.OOB_THRESH)**2));
+    for(var b of oob2) {
+	var idx = this.balls.indexOf(b);
 	this.balls.splice(idx, 1);
     }
+    
     // spawn new balls? sure why not. maybe tweak this for more or less fun later on
     if(this.balls.length < (this.numPlayers-this.dead.length)-1) {
 	this.balls.push(new Ball());
@@ -130,23 +135,19 @@ GameState.prototype.getState = function() {
     return theobject;
 }
 
-// oh can I just trash this? yeah totally todo
-function nearest_point_on_line(c, ep) {
-    // finds the point on the line defined by ep closest to center c
-    if(ep.f.x == ep.s.x) {
-	// vertical line, undef slope
-	return new Coord(ep.f.x, c.y);
-    }
-    if(ep.f.y == ep.s.y) {
-	// horizontal line, zero slope
-	return new Coord(c.x, ep.f.y);
-    }
-    var sl = (ep.f.y-ep.s.y)/(ep.f.x-ep.s.x);
-    var sr = 1/sl;
-    var x_int = (sl*ep.f.x - sr*c.x + c.y - ep.f.y)/(sl-sr);
-    var y_int = sr*(x_int-c.x) + c.y;
-    return new Coord(x_int, y_int);
-}
 
+var left_of = function(c, ep) {
+    // tells if coord c is to the left of an endpoint set (incr in angle)
+    // idea is that if all are left of then the ball is inbounds
+
+    // translate everything to origin
+    var f = new Coord(0,0);
+    var s = new Coord(ep.s.x-ep.f.x, ep.s.y-ep.f.y);
+    var b = new Coord(c.x-ep.f.x, c.y-ep.f.y);
+    // rotate about the origin
+    var th = Math.atan2(s.y, s.x);
+    b.rotate(-th);
+    return b.y >= 0;
+}
 
 module.exports = GameState;
