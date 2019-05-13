@@ -6,6 +6,7 @@ const field = require('./field.js');
 
 function Robot() {
     this.status = 'x';
+    this.isARobot = true;
 }
 
 Robot.prototype.close = function() {

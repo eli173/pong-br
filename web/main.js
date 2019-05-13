@@ -17,21 +17,27 @@ var main = function() { // starts everything, gets us going, setup ish
     canvas.height = window.innerHeight;
     ctx = canvas.getContext('2d');
     // i need to modify the 10's here to be appropriate given the scaling of the window
-    ctx.setTransform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2); // change to setTransform?
+    ctx.setTransform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2);
     ctx.lineWidth = ctx.lineWidth/5;
 
     
-    // this is just to have everything go easily for testing
+    // this is just to have everything go easily for testing, delete before final
+    /**
     var othersockets = [];
     for(var i=0; i<c.NUM_PLAYERS -1; i++) {
 	othersockets.push(new WebSocket(prefixurl));
     }
-
+    /**/
     
     theSocket = new WebSocket(prefixurl);
+    drawWaiting(ctx);
+    
     theSocket.onmessage = function(e) {
 	if(e.data == "busy") {
-	    onBusy();
+	    canvas.onclick = function(e) {location.reload()} // okay, outside of 'input' file...
+	    canvas.onkeydown = function(e) {if(e.keyCode == '71') location.reload()};
+	    drawBusy(ctx);
+	    // socket should be closed by server
 	    return;
 	}
 	canvas.width = window.innerWidth;
@@ -70,8 +76,5 @@ var main = function() { // starts everything, gets us going, setup ish
     theSocket.onclose = function(e) {clearInterval(interval)};
 }
 
-var onBusy = function() {
-    console.log("busy, try again later");
-}
 
 window.addEventListener("DOMContentLoaded", e => main());

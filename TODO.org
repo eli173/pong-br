@@ -5,4 +5,4 @@ list of things i should still do:
 - fiddle with variables to optimize fun
 - TOUCH
 - fix game not ending with just robots (is this actually broken?)
-- double check all on-screen messages for fitting (look to the 'magic number...' comment)
+- double check all messages for fitting (look to the 'magic number...' comment)

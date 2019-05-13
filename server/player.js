@@ -3,6 +3,7 @@
 function Player(ws) {
     this.status = 'x';
     this.socket = ws;
+    this.isARobot = false;
     this.id = -1; // is this used? can i just delete?
     var _this = this;
     var fn = function(msg) {

@@ -28,6 +28,12 @@ Game.prototype.getNextFrame = function() {
 	this.players[i].send_data(state);
     }
 
+    // check for only robots left
+    /*if(!this.players.some(x => !x.isARobot)) { // not true that some player isn't a robot
+	clearInterval(this.timeout);
+	health.dec();
+    }*/
+    
     // check for life and death
     var dead_ids = state.dead.map(d => d.id);
     if(dead_ids.length == state.n-1) {

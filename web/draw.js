@@ -112,15 +112,50 @@ var drawLine = function(ctx, color, c1, c2) {
 var drawOverlay = function(ctx, place) {
     ctx.save();
     //ctx.font = what should it equal? mind sizes on mobile
-    ctx.setTransform(1,0,0,1,0,0);
+    ctx.setTransform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2);
     ctx.fillStyle = 'rgba(225,225,225,100)'
-    var string1 = "you placed: " + place;
-    var string2 = "click or press =g= to play again"
-    ctx.fillText(string1, 0, 100);
-    ctx.fillText(string2, 0, 200); // magic number...
+    ctx.textAlign = 'center';
+    ctx.fillText("you placed: " + place, 0, -7.5);
+    ctx.fillText("press =g= or click", 0, 0); // magic numbers...
+    ctx.fillText("to play again", 0, 7.5);
     ctx.restore();
 }
-	
+
+var drawWaiting = function(ctx) {
+    ctx.save();
+    ctx.setTransform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2);
+    // i think that the above is unneccesary, but might as well be safe. Not like much is going on client-side
+    ctx.fillStyle = 'rgba(225,225,225,100)';
+    ctx.textAlign = 'center';
+    ctx.fillText("waiting for", 0, -5);
+    ctx.fillText("opponents...", 0, 5);
+    ctx.restore();
+}
+
+var drawOver = function(ctx) {
+    ctx.save();
+    ctx.setTransform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2);
+    ctx.fillStyle = 'rgba(225,225,225,100)'
+    ctx.textAlign = 'center';
+    ctx.fillText("press =g= or click", 0, -5);
+    ctx.fillText("to play again", 0, 5);
+    ctx.restore();
+
+}
+
+var drawBusy = function(ctx) {
+    clearCanvas(ctx);
+    ctx.save();
+    ctx.setTransform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2);
+    // i think that the above is unneccesary, but might as well be safe. Not like much is going on client-side
+    ctx.fillStyle = 'rgba(225,225,225,100)';
+    ctx.textAlign = 'center';
+    ctx.fillText("server is too busy now", 0, -7.5);
+    ctx.fillText("press =g= or click", 0, 0); // magic numbers...
+    ctx.fillText("to play again", 0, 7.5);
+    ctx.restore();
+    
+}
 
 var clearCanvas = function(ctx) {
     ctx.save();
