@@ -1,5 +1,4 @@
 important:
-- second place losing message fix
 
 list of things i should still do:
 - fix collisions

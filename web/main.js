@@ -4,6 +4,7 @@ const prefixurl = "ws://" + window.location.hostname + ":6789";
 var theSocket = null;
 
 var is_dead = false;
+var place = 0;
 
 var module = {};
 
@@ -60,11 +61,18 @@ var main = function() { // starts everything, gets us going, setup ish
 	else if(e.data == "l") {
 	    document.onclick = function(e) {location.reload()} // okay, outside of 'input' file...
 	    document.onkeydown = function(e) {if(e.keyCode == '71') location.reload()};
-	    draw2nd(ctx);
+	    if(place==0)
+		drawOverlay(ctx,2); //second place
+	    else
+		drawOverlay(ctx, place);
 	    console.log("loser");
 	    return;
 	}
 	var state = JSON.parse(e.data);
+	// check for placement, the related order of ops is kinda messy and ad-hoc
+	if(state.dead.some(d => d.id == state.id)) {
+	    place = state.dead.find(d => d.id == state.id).place;
+	}
 	
 	if(!is_dead) {
 	    // check for deadness
