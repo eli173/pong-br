@@ -6,8 +6,8 @@ var c = {
     NUM_PLAYERS: 4,
     FPS: 30,
     WAIT_TIME: 60000, // 1 minute
-    MAX_GAMES: 2, // the most games allowed to go on at once, to be tweaked as needed for purposes
-    ROBO_TIME: 10, // time in seconds before filling out with robots
+    MAX_GAMES: 100, // the most games allowed to go on at once, to be tweaked as needed for purposes
+    ROBO_TIME: 5, // time in seconds before filling out with robots
     // gamestate
     DYING_TIME_IN_FRAMES: 100,
     BOARD_RADIUS: 10,
@@ -19,7 +19,7 @@ var c = {
     MAX_INIT: 3, // initial speed constraints
     BALL_RADIUS: 0.5,
     MAX_SPEED: 15,
-    SPEED_BUMP: 0.2,
+    SPEED_BUMP: 0.5,
     // field
     BOARD_RADIUS: 10, // completely arbitrary actually...
     // paddle
