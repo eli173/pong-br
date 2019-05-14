@@ -44,12 +44,12 @@ function touchHandler(evt, isdn) {
     var touchy = evt.touches[0].clientY; // should be guaranteed to be nonempty i think
     var cvheight = document.getElementById("c").clientHeight;
     if(touchy > cvheight/2) { // may need to swap these if i'm hastily misunderstanding coordinates
-	keystate = 'd';
-	input = 'd';
-    }
-    else {
 	keystate = 'u';
 	input = 'u';
+    }
+    else {
+	keystate = 'd';
+	input = 'd';
     }
     
 }

@@ -1,5 +1,5 @@
 
-const prefixurl = "ws://localhost:6789";
+const prefixurl = "ws://" + window.location.hostname + ":6789";
 
 var theSocket = null;
 
@@ -82,12 +82,11 @@ var main = function() { // starts everything, gets us going, setup ish
 
     document.onkeydown = function(e) {keypressHandler(e, true);};
     document.onkeyup = function(e) {keypressHandler(e, false);};
-    document.addEventListener('touchstart', function(e) {touchhandler(e, true);});
-    document.addEventListener('touchstart', function(e) {touchhandler(e, false);});
+    canvas.addEventListener('touchstart', function(e) {touchHandler(e, true);});
+    canvas.addEventListener('touchend', function(e) {touchHandler(e, false);});
     var interval = setInterval(function(){keySender(theSocket);}, c.MS_PER_FRAME);
 
     theSocket.onclose = function(e) {clearInterval(interval)};
 }
-
 
 window.addEventListener("DOMContentLoaded", e => main());
