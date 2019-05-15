@@ -3,11 +3,11 @@
 var c = {
     // matchmaker
     WS_PORT: 6789,
-    NUM_PLAYERS: 4,
+    NUM_PLAYERS: 10,
     FPS: 30,
     WAIT_TIME: 60000, // 1 minute
     MAX_GAMES: 100, // the most games allowed to go on at once, to be tweaked as needed for purposes
-    ROBO_TIME: 5, // time in seconds before filling out with robots
+    ROBO_TIME: 30, // time in seconds before filling out with robots
     // gamestate
     DYING_TIME_IN_FRAMES: 100,
     BOARD_RADIUS: 10,
@@ -17,7 +17,7 @@ var c = {
     // ball
     MIN_INIT: 1,
     MAX_INIT: 3, // initial speed constraints
-    BALL_RADIUS: 0.5,
+    BALL_RADIUS: 0.3,
     MAX_SPEED: 15,
     SPEED_BUMP: 0.5,
     // field

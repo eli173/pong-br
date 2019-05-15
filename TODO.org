@@ -1,6 +1,8 @@
 todo:
-- fix the robots
+- make sure files in the right place for server stuff
+maybe:
 - paddle movement bump
-- fix collisions
 - more balls
 - fiddle with variables to optimize fun
+
+

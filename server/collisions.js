@@ -59,8 +59,10 @@ var handleWalls = function(ball, walls) {
     // modifies ball's velocity if it encounters an actual collision
     // wall is an endpoints
     for(var wall of walls) {
+	var stretched = wall.elongate(1.2); // this is done to fix collision detection?
 	var next_spot = new Coord(ball.coord.x + ball.dx/c.FPS, ball.coord.y + ball.dy/c.FPS); // the next spot
-	if(segments_intersect(wall, new Endpoints(ball.coord, next_spot))) {
+	var ball_ep = new Endpoints(ball.coord, next_spot)
+	if(segments_intersect(wall, ball_ep.elongate(1.2))) {
 	    //there's a collision
 	    var wall_normal = new Vec((wall.f.x+wall.s.x)/2, (wall.f.y+wall.s.y)/2); // given by the midpoint
 	    wall_normal.normalize();

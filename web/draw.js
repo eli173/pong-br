@@ -49,7 +49,7 @@ var draw = function(state, ctx) {
     }
     // balls
     for(var b of state.balls) {
-	drawBall(ctx, bcolor, b);
+	drawBall(ctx, bcolor, b, state.dead.length, state.n);
     }
     // finally the paddles...
     for(var eps of livingzones) {
@@ -88,11 +88,12 @@ var dist = function(c1, c2) {
     return Math.sqrt((c1.x-c2.x)**2 + (c1.y-c2.y)**2);
 }
 
-var drawBall = function(ctx, color, coord) {
+var drawBall = function(ctx, color, coord, nlive, nmax) {
     ctx.save();
     ctx.fillStyle = color;
     ctx.beginPath();
-    ctx.arc(coord.x, coord.y, c.BALL_RADIUS, 0, 2*Math.PI, false);
+    var rad = c.BALL_RADIUS;
+    ctx.arc(coord.x, coord.y, rad, 0, 2*Math.PI, false);
     ctx.fill();
     ctx.restore();
 }

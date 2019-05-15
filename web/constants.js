@@ -3,7 +3,7 @@
 var c = {
     // matchmaker
     WS_PORT: 6789,
-    NUM_PLAYERS: 4,
+    NUM_PLAYERS: 10,
     MS_PER_FRAME: 100,
     WAIT_TIME: 60000, // 1 minute
     MAX_GAMES: 5, // the most games allowed to go on at once, to be tweaked as needed for purposes
@@ -16,7 +16,7 @@ var c = {
     // ball
     MIN_INIT: 3,
     MAX_INIT: 5, // initial speed constraints
-    BALL_RADIUS: 0.5,
+    BALL_RADIUS: 0.3,
     MAX_SPEED: 15,
     SPEED_BUMP: 0.2,
     // field

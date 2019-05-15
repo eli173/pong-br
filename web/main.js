@@ -55,7 +55,6 @@ var main = function() { // starts everything, gets us going, setup ish
 	    document.onclick = function(e) {location.reload()} // okay, outside of 'input' file...
 	    document.onkeydown = function(e) {if(e.keyCode == '71') location.reload()};
 	    drawWin(ctx);
-	    console.log("winner");
 	    return;
 	}
 	else if(e.data == "l") {
@@ -65,7 +64,6 @@ var main = function() { // starts everything, gets us going, setup ish
 		drawOverlay(ctx,2); //second place
 	    else
 		drawOverlay(ctx, place);
-	    console.log("loser");
 	    return;
 	}
 	var state = JSON.parse(e.data);
