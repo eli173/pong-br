@@ -130,6 +130,8 @@ GameState.prototype.getState = function() {
     var newpads = this.paddles.map(p => p.reduce());
     var thedead = this.dead;
     var totnum = this.numPlayers;
+
+    
     var theobject = {n: totnum, dead: thedead, paddles: newpads, balls: newballs};
     // maybe a proper constructor would be good here...
     return theobject;

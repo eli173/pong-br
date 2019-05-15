@@ -54,21 +54,19 @@ Robot.prototype.standard_ai = function(data) {
     var theta = Math.atan2(my_ep.s.y-my_ep.f.y, my_ep.s.x-my_ep.f.x);
     // not totally sure if i need this copy, dunno where else the object is used...
     var nearest_mod = new Coord(nearest.x, nearest.y)
-    nearest_mod.translate(center.x, center.y);
-    nearest_mod.rotate(-theta);
-    // now i get the paddle's relative position along the line, and use that to compare with
-    if(!data.paddles.some(p => p.id==data.id))
+    var paddle = data.paddles.find(p => p.id == data.id);
+    if(typeof paddle == 'undefined')
 	return;
-    var my_paddle = data.paddles.find(p => p.id == data.id);
-    // largely stolen from getPaddlePoints
-    var ep_len = my_ep.getLength();
-    var pspace_len = ep_len-c.WIDTH_RATIO*ep_len;
-    var idk_len = (ep_len-pspace_len)/2;
-    var paddle_ratio = (my_paddle.pos+1)/2;
-    var center_pos = idk_len+paddle_ratio*pspace_len;
-    if(data.id==2)
-	console.log(nearest_mod.x < center_pos, nearest_mod.x, center_pos);
-    this.status = (nearest_mod.x < center_pos) ? 'd' : 'u';
+    var pobj = new Paddle(data.id);
+    pobj.position = paddle.pos;
+    var pps = pobj.getPaddlePoints(my_ep);
+    var paddle_center = ep_midpoint(pps);
+    nearest_mod.translate(-paddle_center.x, -paddle_center.y);
+    nearest_mod.rotate(-theta);
+    
+    this.status = (nearest_mod.x < 0) ? 'u' : 'd';
+    // if it's close enough just stay still though
+    if(Math.abs(nearest_mod.x) < 0.2) this.status = 'x';
 }
 
 
@@ -111,7 +109,7 @@ Robot.prototype.bad_ai = function(data) {
 }
 
 var midpoint = function(a,b) {
-    return new Coord((a.x+b.x/2), (a.y+b.y)/2);
+    return new Coord((a.x+b.x)/2, (a.y+b.y)/2);
 }
 var ep_midpoint = function(e) {
     return midpoint(e.f, e.s);

@@ -1,4 +1,4 @@
-important:
+todo:
 - fix the robots
 - paddle movement bump
 - fix collisions

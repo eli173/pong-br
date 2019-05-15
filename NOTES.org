@@ -1,4 +1,6 @@
 
+so i'm just realising the bug in the ai code was not translating it by the negative. check the diff in this next commit and the gone line with =translate(center.x, center.y)= should have both =center= pieces negative
+
 OKAY
 
 have an intro page, and then let the 'play' page I already have up be the whole thing.

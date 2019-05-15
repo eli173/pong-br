@@ -90,7 +90,7 @@ var dist = function(c1, c2) {
 
 var drawBall = function(ctx, color, coord) {
     ctx.save();
-    ctx.fillStyle = bcolor;
+    ctx.fillStyle = color;
     ctx.beginPath();
     ctx.arc(coord.x, coord.y, c.BALL_RADIUS, 0, 2*Math.PI, false);
     ctx.fill();
