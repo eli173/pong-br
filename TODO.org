@@ -1,5 +1,6 @@
 todo:
 - make sure files in the right place for server stuff
+- zoom in a little?
 maybe:
 - paddle movement bump
 - more balls

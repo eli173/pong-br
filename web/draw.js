@@ -43,10 +43,6 @@ var draw = function(state, ctx) {
 	}
 	drawLine(ctx, c, eps.f, eps.s);
     }
-    // do something to show the zones for my sanity
-    for(var lz of livingzones) {
-	drawLine(ctx, xcolor, lz.f, lz.s);
-    }
     // balls
     for(var b of state.balls) {
 	drawBall(ctx, bcolor, b, state.dead.length, state.n);
@@ -128,7 +124,7 @@ var drawWaiting = function(ctx) {
     // i think that the above is unneccesary, but might as well be safe. Not like much is going on client-side
     ctx.fillStyle = 'rgba(225,225,225,100)';
     ctx.textAlign = 'center';
-    ctx.fillText("waiting for", 0, -5);
+    ctx.fillText("finding", 0, -5);
     ctx.fillText("opponents...", 0, 5);
     ctx.restore();
 }
