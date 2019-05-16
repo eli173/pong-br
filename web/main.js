@@ -1,5 +1,5 @@
 
-const prefixurl = "ws://" + window.location.hostname + ":6789";
+const prefixurl = "wss://" + window.location.hostname + ":" + c.WS_PORT;
 
 var theSocket = null;
 

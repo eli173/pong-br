@@ -41,3 +41,4 @@ server/node_modules/*
 /server/health.js~
 /server/robot.js~
 /server/TODO.org~
+/server/Dockerfile~
