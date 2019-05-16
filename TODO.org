@@ -1,6 +1,5 @@
 todo:
 - make sure files in the right place for server stuff
-- CLEAN UP THE INDEX PAGE! MAKE IT LOOK OKAY JEEZ
 maybe:
 - paddle movement bump
 - more balls
