@@ -1,0 +1,15 @@
+{
+  "name": "pong_br",
+  "version": "1.0.0",
+  "description": "Pong: Battle Royale!",
+  "main": "matchmaker.js",
+  "dependencies": {
+    "ws": "^6.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Elijah Cohen",
+  "license": "UNLICENSED"
+}
