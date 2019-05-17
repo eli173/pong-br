@@ -1,5 +1,5 @@
 
-const prefixurl = "ws://" + window.location.hostname + "/sock";
+const prefixurl = "ws://" + window.location.hostname + "/sock/";
 
 var theSocket = null;
 
