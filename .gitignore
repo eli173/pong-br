@@ -42,3 +42,4 @@ server/node_modules/*
 /server/robot.js~
 /server/TODO.org~
 /server/Dockerfile~
+/web/play/index.html~

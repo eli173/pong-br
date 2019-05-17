@@ -53,7 +53,10 @@ var draw = function(state, ctx) {
 	if(paddle === undefined) alert("UH OH, paddle somehow undefined");
 	// cool this is way simpler since we know these are all alive
 	var pps = getPaddlePoints(paddle, eps);
-	drawLine(ctx, pcolor, pps.f, pps.s);
+	if(paddle.id == state.id)
+	    drawLine(ctx, playercolor, pps.f, pps.s);
+	else
+	    drawLine(ctx, pcolor, pps.f, pps.s);
     }
     if(isDead) {
 	drawOverlay(ctx, state.dead.find(d => d.id == state.id).place);
