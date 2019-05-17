@@ -8,7 +8,7 @@
     },
     "devDependencies": {},
     "scripts": {
-	"start": "node matchmaker.js"
+	"start": "node matchmaker.js",
 	"test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Elijah Cohen",

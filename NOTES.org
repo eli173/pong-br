@@ -1,4 +1,9 @@
 
+docker ish:
+- =docker build -t dpbr .= to build
+- =docker run -p 6789:6789 -d dpbr= to run (in bkgd)
+
+
 so i'm just realising the bug in the ai code was not translating it by the negative. check the diff in this next commit and the gone line with =translate(center.x, center.y)= should have both =center= pieces negative
 
 OKAY
