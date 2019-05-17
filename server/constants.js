@@ -2,7 +2,7 @@
 
 var c = {
     // matchmaker
-    WS_PORT: 80,
+    WS_PORT: 6789,
     NUM_PLAYERS: 10,
     FPS: 30,
     WAIT_TIME: 60000, // 1 minute
