@@ -90,10 +90,10 @@ var main = function() { // starts everything, gets us going, setup ish
 	draw(state, ctx);
     }
 
-    document.onkeydown = function(e) {keypressHandler(e, true);};
-    document.onkeyup = function(e) {keypressHandler(e, false);};
-    canvas.addEventListener('touchstart', function(e) {touchHandler(e, true);});
-    canvas.addEventListener('touchend', function(e) {touchHandler(e, false);});
+    document.onkeydown = function(e) {keypressHandler(e, true); keySender(theSocket);};
+    document.onkeyup = function(e) {keypressHandler(e, false);keySender(theSocket);};
+    canvas.addEventListener('touchstart', function(e) {touchHandler(e, true);keySender(theSocket);});
+    canvas.addEventListener('touchend', function(e) {touchHandler(e, false);keySender(theSocket);});
 }
 
 window.addEventListener("DOMContentLoaded", e => main());

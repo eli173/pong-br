@@ -24,7 +24,6 @@ function keypressHandler(evt, isdn) {
 	keystate = thekey;
 	input = thekey;
     }
-    keySender(keystate);
 }
 
 var upKey = function(kc) {
@@ -52,12 +51,11 @@ function touchHandler(evt, isdn) {
 	keystate = 'd';
 	input = 'd';
     }
-    keySender(keystate);
 }
 
 
 
 
 function keySender(ws) {
-	ws.send(keystate);
+    ws.send(keystate);
 }
