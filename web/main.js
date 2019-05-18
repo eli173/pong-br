@@ -94,9 +94,6 @@ var main = function() { // starts everything, gets us going, setup ish
     document.onkeyup = function(e) {keypressHandler(e, false);};
     canvas.addEventListener('touchstart', function(e) {touchHandler(e, true);});
     canvas.addEventListener('touchend', function(e) {touchHandler(e, false);});
-    var interval = setInterval(function(){keySender(theSocket);}, c.MS_PER_FRAME);
-
-    theSocket.onclose = function(e) {clearInterval(interval)};
 }
 
 window.addEventListener("DOMContentLoaded", e => main());
