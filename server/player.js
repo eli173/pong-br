@@ -36,9 +36,7 @@ Player.prototype.send_data = function(data) {
 }
 
 Player.prototype.get_status = function() {
-    var stat = this.status;
-    this.status = 'x';
-    return stat;
+    return this.status;
 }
 
 Player.prototype.close = function() {
