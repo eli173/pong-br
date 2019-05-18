@@ -15,7 +15,14 @@ function Game(players) {
 Game.prototype.start = function(ms) {
     var _this = this;
     var tmpfn = function() {_this.getNextFrame()};
-    this.timeout = setInterval(tmpfn, ms);
+    var tmpfn2 = function() {_this.setInt(tmpfn, ms);};
+    setTimeout(tmpfn2, 3000);
+    for(var player of players) {
+	player.send_data('starting');
+    }
+}
+Game.prototype.setInt = function(fn, ms) {
+    this.timeout = setInterval(fn, ms);
 }
 
 Game.prototype.getNextFrame = function() {

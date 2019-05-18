@@ -186,7 +186,17 @@ var draw2nd = function(ctx) {
     ctx.fillText("second place!", 0, -7.5);
     ctx.fillText("press =g= or click/tap", 0, 0); // magic numbers...
     ctx.fillText("to play again", 0, 7.5);
-    ctx.restore();    
+    ctx.restore();
+}
+
+var drawStarting = function(ctx) {
+    clearCanvas(ctx);
+    ctx.save();
+    ctx.setTransform(10, 0, 0, 10, ctx.canvas.width/2, ctx.canvas.height/2);
+    ctx.fillStyle = 'rgba(225,225,225,100)';
+    ctx.textAlign = 'center';
+    ctx.fillText("starting...", 0, 0); // magic numbers...
+    ctx.restore();
 }
 
 var drawmsg = function(msg) {
