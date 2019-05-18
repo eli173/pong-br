@@ -23,7 +23,7 @@ var c = {
     // field
     BOARD_RADIUS: 10, // completely arbitrary actually...
     // paddle
-    DPADDLE: 0.2,
+    DPADDLE: 0.1,
     WIDTH_RATIO: 0.2, // paddle is 1/10th of gap rn
 }
 
