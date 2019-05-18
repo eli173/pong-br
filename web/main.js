@@ -68,6 +68,7 @@ var main = function() { // starts everything, gets us going, setup ish
 	}
 	if(e.data == "starting") {
 	    drawStarting(ctx);
+	    return;
 	}
 	var state = JSON.parse(e.data);
 	// check for placement, the related order of ops is kinda messy and ad-hoc
