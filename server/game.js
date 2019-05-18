@@ -17,7 +17,7 @@ Game.prototype.start = function(ms) {
     var tmpfn = function() {_this.getNextFrame()};
     var tmpfn2 = function() {_this.setInt(tmpfn, ms);};
     setTimeout(tmpfn2, 3000);
-    for(var player of players) {
+    for(var player of this.players) {
 	player.send_data('starting');
     }
 }
