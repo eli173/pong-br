@@ -1,5 +1,5 @@
-so yeah I'm gonna try to make a battle royale version of pong
+So yeah this is a battle royale version of pong.
 
-using javascript and websockets and python i guess
+This is implemented in Javascript (both in the client and with Node.js for the server) and uses websockets for communication.
 
-why python? i don't really know. it seems easy and i'm not exactly trying to do this the hard way
+Play this at [[http://www.pong-br.com/]]
